@@ -1,28 +1,18 @@
-#include "include/server.h"
-#include "include/client.h"
 #include <iostream>
+#include "mqttbroker.h"
 
 int main() {
-    std::cout << "=== MQTT Broker ===" << std::endl;
-    
-    // Create and start broker
-    Server broker(1883);
-    
-    if (!broker.start()) {
-        std::cerr << "Failed to start broker" << std::endl;
-        return 1;
-    }
-    
-    // Example: Create test client
-    Client testClient("client-001");
-    testClient.connect("localhost", 1883);
-    
-    // Example: Simulate some operations
-    broker.addSubscription("client-001", "test/topic");
-    broker.publishMessage("test/topic", "Hello MQTT!");
-    
-    testClient.disconnect();
-    broker.stop();
-    
+    // load the json config 
+    BrokerConfig config = JSONParser::loadConfig("config.json");
+
+    // create broker instance 
+
+    cout << "MQTT Broker starting..." << endl;
+    cout << "Port: " << config.port << endl;
+    cout << "Max Clients: " << config.maxClients << endl;
+
+    mqttbroker broker(config.port);
+    mqttbroker.start();
+
     return 0;
 }
