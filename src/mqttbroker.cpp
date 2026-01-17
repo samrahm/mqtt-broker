@@ -46,6 +46,7 @@ mqttbroker::~mqttbroker()
     }
 }
 
+// client handling
 void mqttbroker::handleClient(int client_fd)
 {
     while (true)
@@ -62,9 +63,58 @@ void mqttbroker::handleClient(int client_fd)
 void mqttbroker::processPacket(int client_fd)
 {
     cout << "processing packet" << endl;
+    // read packet
+    std::vector<uint8_t> buffer(1024);
+    int bytes = recv(client_fd, buffer.data(), buffer.size(), 0);
+    if (bytes <= 0)
+    {
+        if (bytes < 0)  
+        {
+            cout << "client disconnected or error " << endl;
+            cout << "receive failed on socket " << client_fd << endl;
+        }
+        buffer.clear();
+        close(client_fd);
+        return false;
+    }
+
+    buffer.resize();
+
+    // decide whether conn, publish or subs
+    
+    uint8_t packetType = buffer[0] >> 4;    // left shift to keep upper 4 bits containing packet type 
+    switch (static_cast<Signal>(packetType))
+    {
+    case Signal::CONNECT:
+        cout << "Client connected " << client_fd << endl;
+        sendConnack(client_fd);
+        break;
+    case Signal::PUBLISH:
+        handlePublish(client_fd, buffer, bytes);
+        break;
+    case Signal::SUBSCRIBE:
+        handleSubscribe(client_fd, buffer);
+        break;
+    case Signal::DISCONNECT:
+        close(client_fd);     
+        cout << "Client disconnected " << client_fd << endl;
+        return false;
+    default:
+        cout << "unsupported packet type : " << packetType << endl;
+        return false;
+    }
+    return true;
 }
 
-void mqttbroker::publishMessage(const std::string& topic, const std::string& message) {
+void mqttbroker::sendConnack(int client_fd)
+{
+    uint8_t connack[4] = {0x20, 0x02, 0x00, 0x00}; 
+    send(client_fd, connack, sizeof(connack), 0);
+    Logger::log(LEVEL::INFO, "sent CONNACK to client %s \n",  clientSock );
+}
+
+// void mqttbroker::handlePublish(int client_fd, const std::vector<uint8_t> &buffer, int byt);
+void mqttbroker::handlePublish(const std::string& topic, const std::string& message) {
     std::cout << "publishing message to topic '" << topic << "': " << message << std::endl;
     
     // Store message
@@ -78,20 +128,19 @@ void mqttbroker::publishMessage(const std::string& topic, const std::string& mes
     }
 }
 
+void mqttbroker::logPublish(int, const std::string &topic, const std::string &message)
+{
+    Logger::log(LEVEL::INFO, "Published message to topic '%s': %s", topic.c_str(), message.c_str());
+}
+
+
+void mqttbroker::handleSubscribe(int client_fd)
+
 void mqttbroker::addSubscription(const std::string& clientId, const std::string& topic) {
     subscriptions.push_back({clientId, topic});
     std::cout << "Client " << clientId << " subscribed to topic: " << topic << std::endl;
 }
 
-bool mqttbroker::isRunning() const {
-    return running;
-}
-
-
-
-void mqttbroker::sendConnack(int client_fd)
-{
-}
 
 void mqttbroker::logPublish(int, const std::string &topic, const std::string &message)
 {
