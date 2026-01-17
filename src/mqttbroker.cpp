@@ -152,6 +152,9 @@ void mqttbroker::handleConnect(int client_fd)
     std::string clientId = get_string(buffer, offset);
     bool cleanSession = connectFlags & 0x02;
 
+    //prevents other threads from accessing sessions
+    std::lock_guard<std::mutex> lock(sessionMutex);
+
     // create new session or resume existing
     if (!sessions.contains(clientId) || cleanSession)
     {
@@ -202,17 +205,90 @@ void mqttbroker::logPublish(int client_fd, const std::string &topic, const std::
     Logger::log(LEVEL::INFO, "published message to topic '%s': %s", topic.c_str(), message.c_str());
 }
 
-void forwardToSubscribers(const std::string &topic, const std::string &message, int exclude_fd = -1)
+void forwardToSubscribers(const std::string &topic, const std::string &message, int exclude_fd)
 {
+    std::lock_guard<std::mutex> lock(subMutex);
+    
     // find subscribers(each session, mapped on clientid, has subscribers)
-    // send to subscribers
+    for (const auto &entry : topicSubscribers)
+    {
+        const std::string &subscription = entry.first;
+        const std::unordered_set<int> &sockets = entry.second;
+
+        if (matchTopic(subscription, topic))
+        {
+            for (int sock : sockets)
+            {
+                if (sock == excludeSock)
+                    continue;
+
+                std::vector<uint8_t> packet;
+                std::string header = "\x30"; // PUBLISH, QoS 0
+                std::string fullPayload;
+
+                // Build payload: [topic length][topic][message]
+                uint16_t len = topic.size();
+                // encodes topic length 
+                fullPayload.push_back((len >> 8) & 0xFF);
+                fullPayload.push_back(len & 0xFF);
+                fullPayload += topic;
+                fullPayload += message;
+
+                header += static_cast<char>(fullPayload.size());
+                packet.insert(packet.end(), header.begin(), header.end());
+                packet.insert(packet.end(), fullPayload.begin(), fullPayload.end());
+
+                // send to subscribers
+                send(sock, packet.data(), packet.size(), 0);
+            }
+        }
+    }
+
+
 }
 
-bool matchTopic(const std::string &sub, const std::string &topic)
+
+bool mqttbroker::matchTopic(const std::string &subscription, const std::string &topic)
 {
+    Logger::log(LEVEL::DEBUG, "Matching subscription '%s' with topic '%s'", subscription.c_str(), topic.c_str());
+
+    std::istringstream subStream(subscription);
+    std::istringstream topicStream(topic);
+
+    std::string subToken, topicToken;
+
+    while (true)
+    {
+        bool hasSub = static_cast<bool>(std::getline(subStream, subToken, '/'));
+        bool hasTopic = static_cast<bool>(std::getline(topicStream, topicToken, '/'));
+
+        if (!hasSub && !hasTopic)
+        {
+            // Reached end of both, full match
+            return true;
+        }
+
+        if (hasSub && subToken == "#")
+        {
+            return true; // Match everything after
+        }
+
+        if (!hasSub || !hasTopic)
+        {
+            // One stream ended before the other, not a match
+            return false;
+        }
+
+        if (subToken != "+" && subToken != topicToken)
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 // handling subscribe
-void handleSubscribe(int client_fd, const std::vector<uint8_t> &buffer)
+void mqttbroker::handleSubscribe(int client_fd, const std::vector<uint8_t> &buffer)
 {
 }

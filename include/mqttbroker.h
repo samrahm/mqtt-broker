@@ -45,7 +45,8 @@ private:
     
     int server_fd;
     int port;
-    std::unordered_map<std::string, Session> sessions;
-    std::unordered_map<std::string, std::unordered_set<std::string>> topicSubscribers;
+    std::unordered_map<std::string, Session> sessions;  // client -> session
+    std::unordered_map<std::string, std::unordered_set<std::string>> topicSubscribers;  // topic -> clients
+    std::mutex sessionMutex;
     std::mutex subMutex;
 };
