@@ -3,6 +3,8 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include "include/mqtt_utils.h"
+#include "include/logger.h"
 
 mqttbroker::mqttbroker(int port) : port(port), serversock(-1) {}
 
@@ -11,17 +13,28 @@ void mqttbroker::start()
     serversock = socket(AF_INET, SOCK_STREAM, 0);
     if (serversock == 0)
     {
-        cerr << "socket failed\n";
-        return 1;
+        Logger::log(LEVEL::WARNING, "socket creation failed.");
+        return;
     }
 
     sockaddr_in address;
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons(8080);
+    address.sin_port = htons(port);
 
-    errorcheck(bind(server_fd, (struct sockaddr *)&address, sizeof(address)), "failed to bind to port 8080.\n");
-    errorcheck(listen(server_fd, 3), "failed to listen in the socket.\n");
+    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) == -1)
+    {
+        Logger::log(LEVEL::WARNING, "bind failed on port %d", port);
+        retun
+    }
+
+    if (listen(server_fd, 3) == -1)
+    {
+        Logger::log(LEVEL::WARNING, "Listen failed on port %d", port);
+        return;
+    }
+
+    Logger::log(LEVEL::INFO, "MQTT Broker started on port %d", port);
 
     while (true)
     {
@@ -29,7 +42,7 @@ void mqttbroker::start()
         int client_fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen);
         if (client_fd < 0)
         {
-            cerr << "failed to accept\n";
+            Logger::log(LEVEL::WARNING, "failed to accept %d ", client_fd);
             continue;
         }
 
@@ -42,7 +55,7 @@ mqttbroker::~mqttbroker()
     if (serversock >= 0)
     {
         close(serversock);
-        cout << "mqtt disconnected." << endl;
+        Logger::log(LEVEL::INFO, "MQTT Broker stopped");
     }
 }
 
@@ -53,7 +66,7 @@ void mqttbroker::handleClient(int client_fd)
     {
         if (!processPacket(client_fd))
         {
-            cout << "client disconnected." << endl;
+            Logger::log(LEVEL::INFO, "client disconnected : %d", client_fd);
             break;
         }
     }
@@ -62,16 +75,15 @@ void mqttbroker::handleClient(int client_fd)
 
 void mqttbroker::processPacket(int client_fd)
 {
-    cout << "processing packet" << endl;
     // read packet
     std::vector<uint8_t> buffer(1024);
     int bytes = recv(client_fd, buffer.data(), buffer.size(), 0);
     if (bytes <= 0)
     {
-        if (bytes < 0)  
+        if (bytes < 0)
         {
-            cout << "client disconnected or error " << endl;
-            cout << "receive failed on socket " << client_fd << endl;
+            Logger::log(LEVEL::WARNING, "client disconnected or error ");
+            Logger::log(LEVEL::WARNING, "receive failed on socket %d", client_fd);
         }
         buffer.clear();
         close(client_fd);
@@ -80,69 +92,127 @@ void mqttbroker::processPacket(int client_fd)
 
     buffer.resize();
 
-    // decide whether conn, publish or subs
-    
-    uint8_t packetType = buffer[0] >> 4;    // left shift to keep upper 4 bits containing packet type 
+    // classify according to packet type
+
+    uint8_t packetType = buffer[0] >> 4; // right shift to keep upper 4 bits containing packet type
     switch (static_cast<Signal>(packetType))
     {
+    // connect received
     case Signal::CONNECT:
-        cout << "Client connected " << client_fd << endl;
-        sendConnack(client_fd);
+        Logger::log(LEVEL::INFO, "client %d connected", client_fd);
+        handleConnect(client_fd);
         break;
+
+    // publish received
     case Signal::PUBLISH:
         handlePublish(client_fd, buffer, bytes);
         break;
+
+    // subscribe received
     case Signal::SUBSCRIBE:
         handleSubscribe(client_fd, buffer);
         break;
+
+    // disconnect received
     case Signal::DISCONNECT:
-        close(client_fd);     
-        cout << "Client disconnected " << client_fd << endl;
+        close(client_fd);
+        Logger::log(LEVEL::INFO, "client %d disconnected", client_fd);
         return false;
+
+    // unsupported type
     default:
-        cout << "unsupported packet type : " << packetType << endl;
+        Logger::log(LEVEL::WARNING, "unsupported packet type: %d", packetType);
         return false;
     }
     return true;
 }
 
+// handling connect
+void mqttbroker::handleConnect(int client_fd)
+{
+    // parse connect
+    auto rl = parseRemainingLength(buffer);
+    size_t fixedHeaderSize = 1 + rl.bytesUsed;
+
+    size_t offset = fixedHeaderSize;
+
+    // check protocol/ version
+    std::string protocolName = get_string(buffer, offset);
+
+    uint8_t protocolLevel = get_uint8(buffer, offset);
+    offset += 1;
+
+    uint8_t connectFlags = get_uint8(buffer, offset);
+    offset += 1;
+
+    uint16_t keepAlive = get_uint16(buffer, offset);
+    offset += 2;
+
+    // extract clientID, clean session
+    std::string clientId = get_string(buffer, offset);
+    bool cleanSession = connectFlags & 0x02;
+
+    // create new session or resume existing
+    if (!sessions.contains(clientId) || cleanSession)
+    {
+        sessions[clientId] = Session{client_fd, cleanSession, {}};
+    }
+    else
+    {
+        sessions[clientId].socket = client_fd; // resume
+    }
+
+    // send connack
+    sendConnack(client_fd);
+}
+
 void mqttbroker::sendConnack(int client_fd)
 {
-    uint8_t connack[4] = {0x20, 0x02, 0x00, 0x00}; 
+    uint8_t connack[4] = {0x20, 0x02, 0x00, 0x00}; // connack header
     send(client_fd, connack, sizeof(connack), 0);
-    Logger::log(LEVEL::INFO, "sent CONNACK to client %s \n",  clientSock );
+    Logger::log(LEVEL::INFO, "sent CONNACK to client %d", clientSock);
 }
 
-// void mqttbroker::handlePublish(int client_fd, const std::vector<uint8_t> &buffer, int byt);
-void mqttbroker::handlePublish(const std::string& topic, const std::string& message) {
-    std::cout << "publishing message to topic '" << topic << "': " << message << std::endl;
-    
-    // Store message
-    topicMessages[topic].push_back(message);
-    
-    // TODO: Deliver to subscribers
-    for (const auto& sub : subscriptions) {
-        if (sub.topic == topic) {
-            std::cout << "  -> Delivering to client: " << sub.clientId << std::endl;
-        }
-    }
-}
-
-void mqttbroker::logPublish(int, const std::string &topic, const std::string &message)
+// handling publish
+void mqttbroker::handlePublish(int client_fd, const std::vector<uint8_t> &buffer, int bytes)
 {
-    Logger::log(LEVEL::INFO, "Published message to topic '%s': %s", topic.c_str(), message.c_str());
+    // parsed through the fixed header
+    auto r = parseRemainingLength(buffer);
+    size_t fixedHeaderSize = 1 + r.bytesUsed;
+    size_t vhOffset = fixedHeaderSize;
+
+    uint16_t topicLength = get_uint16(buffer, vhOffset);
+    size_t topicOffset = vhOffset + 2;
+
+    // topic extract
+    std::string topic(buffer.begin() + topicOffset, buffer.begin() + topicOffset + topicLength);
+
+    // payload extract
+    size_t payloadOffset = topicOffset + topicLength;
+    std::string payload(buffer.begin() + payloadOffset, buffer.begin() + bytes);
+
+    // log
+    logPublish(cient_fd, topic, payload);
+    // forward to subscribers
+    forwardToSubscribers(topic, payload, client_fd);
 }
 
-
-void mqttbroker::handleSubscribe(int client_fd)
-
-void mqttbroker::addSubscription(const std::string& clientId, const std::string& topic) {
-    subscriptions.push_back({clientId, topic});
-    std::cout << "Client " << clientId << " subscribed to topic: " << topic << std::endl;
-}
-
-
-void mqttbroker::logPublish(int, const std::string &topic, const std::string &message)
+void mqttbroker::logPublish(int client_fd, const std::string &topic, const std::string &message)
 {
-    cout << "published message to topic '" << topic.c_str() << "': " message.c_str() << endl;;
+    Logger::log(LEVEL::INFO, "published message to topic '%s': %s", topic.c_str(), message.c_str());
+}
+
+void forwardToSubscribers(const std::string &topic, const std::string &message, int exclude_fd = -1)
+{
+    // find subscribers(each session, mapped on clientid, has subscribers)
+    // send to subscribers
+}
+
+bool matchTopic(const std::string &sub, const std::string &topic)
+{
+}
+
+// handling subscribe
+void handleSubscribe(int client_fd, const std::vector<uint8_t> &buffer)
+{
 }

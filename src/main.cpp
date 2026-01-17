@@ -1,11 +1,12 @@
 #include <iostream>
-#include "mqttbroker.h"
+#include "include/mqttbroker.h"
 
-int main() {
-    // load the json config 
+int main()
+{
+    // load the json config
     BrokerConfig config = JSONParser::loadConfig("config.json");
 
-    // create broker instance 
+    // create broker instance
 
     cout << "MQTT Broker starting..." << endl;
     cout << "Port: " << config.port << endl;
