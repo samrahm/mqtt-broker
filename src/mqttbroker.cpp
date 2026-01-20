@@ -1,17 +1,18 @@
 #include <cstring>
 #include <iostream>
+#include <unistd.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
-#include <unistd.h>
 #include "include/mqtt_utils.h"
+#include "include/mqttbroker.h"
 #include "include/logger.h"
 
 mqttbroker::mqttbroker(int port) : port(port), serversock(-1) {}
 
 void mqttbroker::start()
 {
-    serversock = socket(AF_INET, SOCK_STREAM, 0);
-    if (serversock == 0)
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd == 0)
     {
         Logger::log(LEVEL::WARNING, "socket creation failed.");
         return;
@@ -25,7 +26,7 @@ void mqttbroker::start()
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) == -1)
     {
         Logger::log(LEVEL::WARNING, "bind failed on port %d", port);
-        retun
+        return;
     }
 
     if (listen(server_fd, 3) == -1)
@@ -52,9 +53,9 @@ void mqttbroker::start()
 
 mqttbroker::~mqttbroker()
 {
-    if (serversock >= 0)
+    if (server_fd >= 0)
     {
-        close(serversock);
+        close(server_fd);
         Logger::log(LEVEL::INFO, "MQTT Broker stopped");
     }
 }
@@ -73,7 +74,7 @@ void mqttbroker::handleClient(int client_fd)
     close(client_fd);
 }
 
-void mqttbroker::processPacket(int client_fd)
+bool mqttbroker::processPacket(int client_fd)
 {
     // read packet
     std::vector<uint8_t> buffer(1024);
@@ -86,11 +87,11 @@ void mqttbroker::processPacket(int client_fd)
             Logger::log(LEVEL::WARNING, "receive failed on socket %d", client_fd);
         }
         buffer.clear();
-        close(client_fd);
+        // close(client_fd);
         return false;
     }
 
-    buffer.resize();
+    buffer.resize(bytes);
 
     // classify according to packet type
 
@@ -100,7 +101,7 @@ void mqttbroker::processPacket(int client_fd)
     // connect received
     case Signal::CONNECT:
         Logger::log(LEVEL::INFO, "client %d connected", client_fd);
-        handleConnect(client_fd);
+        handleConnect(client_fd, buffer);
         break;
 
     // publish received
@@ -128,7 +129,7 @@ void mqttbroker::processPacket(int client_fd)
 }
 
 // handling connect
-void mqttbroker::handleConnect(int client_fd)
+void mqttbroker::handleConnect(int client_fd, const std::vector<uint8_t> &buffer)
 {
     // parse connect
     auto rl = parseRemainingLength(buffer);
@@ -152,7 +153,7 @@ void mqttbroker::handleConnect(int client_fd)
     std::string clientId = get_string(buffer, offset);
     bool cleanSession = connectFlags & 0x02;
 
-    //prevents other threads from accessing sessions
+    // prevents other threads from accessing sessions
     std::lock_guard<std::mutex> lock(sessionMutex);
 
     // create new session or resume existing
@@ -173,7 +174,7 @@ void mqttbroker::sendConnack(int client_fd)
 {
     uint8_t connack[4] = {0x20, 0x02, 0x00, 0x00}; // connack header
     send(client_fd, connack, sizeof(connack), 0);
-    Logger::log(LEVEL::INFO, "sent CONNACK to client %d", clientSock);
+    Logger::log(LEVEL::INFO, "sent CONNACK to client %d", client_fd);
 }
 
 // handling publish
@@ -195,7 +196,7 @@ void mqttbroker::handlePublish(int client_fd, const std::vector<uint8_t> &buffer
     std::string payload(buffer.begin() + payloadOffset, buffer.begin() + bytes);
 
     // log
-    logPublish(cient_fd, topic, payload);
+    logPublish(client_fd, topic, payload);
     // forward to subscribers
     forwardToSubscribers(topic, payload, client_fd);
 }
@@ -205,10 +206,10 @@ void mqttbroker::logPublish(int client_fd, const std::string &topic, const std::
     Logger::log(LEVEL::INFO, "published message to topic '%s': %s", topic.c_str(), message.c_str());
 }
 
-void forwardToSubscribers(const std::string &topic, const std::string &message, int exclude_fd)
+void mqttbroker::forwardToSubscribers(const std::string &topic, const std::string &message, int exclude_fd)
 {
     std::lock_guard<std::mutex> lock(subMutex);
-    
+
     // find subscribers(each session, mapped on clientid, has subscribers)
     for (const auto &entry : topicSubscribers)
     {
@@ -219,7 +220,7 @@ void forwardToSubscribers(const std::string &topic, const std::string &message, 
         {
             for (int sock : sockets)
             {
-                if (sock == excludeSock)
+                if (sock == exclude_fd)
                     continue;
 
                 std::vector<uint8_t> packet;
@@ -228,7 +229,7 @@ void forwardToSubscribers(const std::string &topic, const std::string &message, 
 
                 // Build payload: [topic length][topic][message]
                 uint16_t len = topic.size();
-                // encodes topic length 
+                // encodes topic length
                 fullPayload.push_back((len >> 8) & 0xFF);
                 fullPayload.push_back(len & 0xFF);
                 fullPayload += topic;
@@ -243,10 +244,7 @@ void forwardToSubscribers(const std::string &topic, const std::string &message, 
             }
         }
     }
-
-
 }
-
 
 bool mqttbroker::matchTopic(const std::string &subscription, const std::string &topic)
 {
@@ -291,4 +289,40 @@ bool mqttbroker::matchTopic(const std::string &subscription, const std::string &
 // handling subscribe
 void mqttbroker::handleSubscribe(int client_fd, const std::vector<uint8_t> &buffer)
 {
+    uint16_t packetId = get_uint16(buffer, 2);
+
+    size_t offset = 4;
+    std::vector<uint8_t> returnCodes;
+    while (offset + 2 < buffer.size())
+    {
+        uint16_t topicLen = get_uint16(buffer, offset);
+        offset += 2;
+
+        if (offset + topicLen > buffer.size())
+            break;
+
+        std::string topic(buffer.begin() + offset, buffer.begin() + offset + topicLen);
+        offset += topicLen;
+
+        uint8_t qos = buffer[offset]; // usually 0
+        offset++;
+
+        {
+            std::lock_guard<std::mutex> lock(subMutex);
+            topicSubscribers[topic].insert(client_fd);
+        }
+
+        Logger::log(LEVEL::INFO, "Client %d subscribed to topic '%s'", client_fd, topic.c_str());
+        returnCodes.push_back(0x00); // Always grant QoS 0 for now
+    }
+
+    // Build SUBACK
+    std::vector<uint8_t> suback;
+    suback.push_back(SUB_ACK);                // SUBACK
+    suback.push_back(2 + returnCodes.size()); // Remaining length
+    suback.push_back(static_cast<uint8_t>(packetId >> 8));
+    suback.push_back(static_cast<uint8_t>(packetId & 0xFF));
+    suback.insert(suback.end(), returnCodes.begin(), returnCodes.end());
+
+    send(client_fd, suback.data(), suback.size(), 0);
 }
