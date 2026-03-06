@@ -8,8 +8,8 @@ using json = nlohmann::json;
 
 struct BrokerConfig {
     int port ;
-    int maxClients ;
-    std::string logLevel ;
+    int max_clients ;
+    std::string log_level ;
 };
 
 class JSONParser {

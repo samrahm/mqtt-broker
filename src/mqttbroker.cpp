@@ -7,7 +7,13 @@
 #include "include/mqttbroker.h"
 #include "include/logger.h"
 
-mqttbroker::mqttbroker(int port) : port(port), serversock(-1) {}
+#define SUB_ACK 0x90
+#define PUBACK 0x40  // PUBACK control packet type (4 << 4)
+#define PUBREC 0x50  // PUBREC control packet type (5 << 4)
+#define PUBREL 0x62  // PUBREL control packet type (6 << 4) with flags 0b0010
+#define PUBCOMP 0x70 // PUBCOMP control packet type (7 << 4)
+
+mqttbroker::mqttbroker(int port) : port(port), server_fd(-1) {}
 
 void mqttbroker::start()
 {
@@ -67,7 +73,7 @@ void mqttbroker::handleClient(int client_fd)
     {
         if (!processPacket(client_fd))
         {
-            Logger::log(LEVEL::INFO, "client disconnected : %d", client_fd);
+            Logger::log(LEVEL::INFO, "processing failed : %d", client_fd);
             break;
         }
     }
@@ -87,7 +93,7 @@ bool mqttbroker::processPacket(int client_fd)
             Logger::log(LEVEL::WARNING, "receive failed on socket %d", client_fd);
         }
         buffer.clear();
-        // close(client_fd);
+        // close(client_fd);    // redundant call
         return false;
     }
 
@@ -95,7 +101,8 @@ bool mqttbroker::processPacket(int client_fd)
 
     // classify according to packet type
 
-    uint8_t packetType = buffer[0] >> 4; // right shift to keep upper 4 bits containing packet type
+    uint8_t packetType = buffer[0] >> 4;   // right shift to keep upper 4 bits containing packet type
+    uint8_t qos = (buffer[0] >> 1) & 0x03; // bits 1–2 specifying QoS level
     switch (static_cast<Signal>(packetType))
     {
     // connect received
@@ -112,6 +119,31 @@ bool mqttbroker::processPacket(int client_fd)
     // subscribe received
     case Signal::SUBSCRIBE:
         handleSubscribe(client_fd, buffer);
+        break;
+
+    // puback received (QoS 1 acknowledgement)
+    case Signal::PUBACK:
+        // buffer elements: fixed header, remaining length, packet id
+        if (bytes >= 4)
+        {
+            uint16_t pid = (buffer[2] << 8) | buffer[3];
+            Logger::log(LEVEL::DEBUG, "received PUBACK from %d for packet %u", client_fd, pid);
+        }
+        break;
+
+    // pubrec received (QoS 2 first step)
+    case Signal::PUBREC:
+        handlePubrec(client_fd, buffer, bytes);
+        break;
+
+    // pubrel received (QoS 2 second step)
+    case Signal::PUBREL:
+        handlePubrel(client_fd, buffer, bytes);
+        break;
+
+    // pubcomp received (QoS 2 completion)
+    case Signal::PUBCOMP:
+        handlePubcomp(client_fd, buffer, bytes);
         break;
 
     // disconnect received
@@ -185,6 +217,16 @@ void mqttbroker::handlePublish(int client_fd, const std::vector<uint8_t> &buffer
     size_t fixedHeaderSize = 1 + r.bytesUsed;
     size_t vhOffset = fixedHeaderSize;
 
+    // for QoS > 0 there is a packet identifier in the variable header
+    uint8_t flags = buffer[0] & 0x0F;
+    uint8_t qos = (flags >> 1) & 0x03;
+    uint16_t packetId = 0;
+    if (qos > 0)
+    {
+        packetId = get_uint16(buffer, vhOffset);
+        vhOffset += 2;
+    }
+
     uint16_t topicLength = get_uint16(buffer, vhOffset);
     size_t topicOffset = vhOffset + 2;
 
@@ -197,8 +239,107 @@ void mqttbroker::handlePublish(int client_fd, const std::vector<uint8_t> &buffer
 
     // log
     logPublish(client_fd, topic, payload);
+
+    // QoS 2 must wait for PUBREL before delivering
+    if (qos == 2)
+    {
+        // store until we see PUBREL
+        {
+            std::lock_guard<std::mutex> lock(subMutex);
+            inflightIncoming[client_fd][packetId] = PendingQoS2{topic, payload};
+        }
+        uint8_t rec[4];
+        rec[0] = PUBREC;
+        rec[1] = 0x02;
+        rec[2] = packetId >> 8;
+        rec[3] = packetId & 0xFF;
+        send(client_fd, rec, sizeof(rec), 0);
+        return;
+    }
+
     // forward to subscribers
     forwardToSubscribers(topic, payload, client_fd);
+
+    // respond with PUBACK for QoS 1
+    if (qos == 1)
+    {
+        uint8_t ack[4];
+        ack[0] = PUBACK;
+        ack[1] = 0x02; // remaining length
+        ack[2] = packetId >> 8;
+        ack[3] = packetId & 0xFF;
+        send(client_fd, ack, sizeof(ack), 0);
+        return;
+    }
+}
+
+void mqttbroker::handlePubrec(int client_fd, const std::vector<uint8_t> &buffer, int bytes)
+{
+    if (bytes < 4)
+        return;
+
+    uint16_t packetId = (buffer[2] << 8) | buffer[3];
+    Logger::log(LEVEL::DEBUG, "received PUBREC from %d for packet %u", client_fd, packetId);
+
+    // send PUBREL
+    uint8_t rel[4];
+    rel[0] = PUBREL;
+    rel[1] = 0x02;
+    rel[2] = packetId >> 8;
+    rel[3] = packetId & 0xFF;
+    send(client_fd, rel, sizeof(rel), 0);
+}
+
+void mqttbroker::handlePubrel(int client_fd, const std::vector<uint8_t> &buffer, int bytes)
+{
+    if (bytes < 4)
+        return;
+
+    uint16_t packetId = (buffer[2] << 8) | buffer[3];
+    Logger::log(LEVEL::DEBUG, "received PUBREL from %d for packet %u", client_fd, packetId);
+
+    PendingQoS2 pending;
+    {
+        std::lock_guard<std::mutex> lock(subMutex);
+        auto it = inflightIncoming.find(client_fd);
+        if (it != inflightIncoming.end())
+        {
+            auto it2 = it->second.find(packetId);
+            if (it2 != it->second.end())
+            {
+                pending = it2->second;
+                it->second.erase(it2);
+            }
+        }
+    }
+
+    if (!pending.topic.empty())
+    {
+        forwardToSubscribers(pending.topic, pending.payload, client_fd);
+    }
+
+    // respond with PUBCOMP
+    uint8_t comp[4];
+    comp[0] = PUBCOMP;
+    comp[1] = 0x02;
+    comp[2] = packetId >> 8;
+    comp[3] = packetId & 0xFF;
+    send(client_fd, comp, sizeof(comp), 0);
+}
+
+void mqttbroker::handlePubcomp(int client_fd, const std::vector<uint8_t> &buffer, int bytes)
+{
+    if (bytes < 4)
+        return;
+
+    uint16_t packetId = (buffer[2] << 8) | buffer[3];
+    Logger::log(LEVEL::DEBUG, "received PUBCOMP from %d for packet %u", client_fd, packetId);
+    std::lock_guard<std::mutex> lock(subMutex);
+    auto it = inflightOutgoing.find(client_fd);
+    if (it != inflightOutgoing.end())
+    {
+        it->second.erase(packetId);
+    }
 }
 
 void mqttbroker::logPublish(int client_fd, const std::string &topic, const std::string &message)
@@ -214,34 +355,56 @@ void mqttbroker::forwardToSubscribers(const std::string &topic, const std::strin
     for (const auto &entry : topicSubscribers)
     {
         const std::string &subscription = entry.first;
-        const std::unordered_set<int> &sockets = entry.second;
+        if (!matchTopic(subscription, topic))
+            continue;
 
-        if (matchTopic(subscription, topic))
+        for (const auto &pair : entry.second)
         {
-            for (int sock : sockets)
+            int sock = pair.first;
+            uint8_t qos = pair.second;
+            if (sock == exclude_fd)
+                continue;
+
+            std::vector<uint8_t> packet;
+            uint8_t headerByte = 0x30; // PUBLISH
+            headerByte |= (qos << 1);
+            std::string header;
+            header.push_back(static_cast<char>(headerByte));
+            std::string fullPayload;
+
+            // Build payload: [topic length][topic][message]
+            uint16_t len = topic.size();
+            fullPayload.push_back((len >> 8) & 0xFF);
+            fullPayload.push_back(len & 0xFF);
+            fullPayload += topic;
+
+            // add packet id if QoS>0
+            uint16_t pid = 0;
+            if (qos > 0)
             {
-                if (sock == exclude_fd)
-                    continue;
+                pid = ++nextPacketId[sock]; // start at 1
+                fullPayload.push_back(pid >> 8);
+                fullPayload.push_back(pid & 0xFF);
 
-                std::vector<uint8_t> packet;
-                std::string header = "\x30"; // PUBLISH, QoS 0
-                std::string fullPayload;
-
-                // Build payload: [topic length][topic][message]
-                uint16_t len = topic.size();
-                // encodes topic length
-                fullPayload.push_back((len >> 8) & 0xFF);
-                fullPayload.push_back(len & 0xFF);
-                fullPayload += topic;
-                fullPayload += message;
-
-                header += static_cast<char>(fullPayload.size());
-                packet.insert(packet.end(), header.begin(), header.end());
-                packet.insert(packet.end(), fullPayload.begin(), fullPayload.end());
-
-                // send to subscribers
-                send(sock, packet.data(), packet.size(), 0);
+                if (qos == 2)
+                {
+                    // keep state for QoS 2 handshake (PUBREC/PUBREL/PUBCOMP)
+                    inflightOutgoing[sock][pid] = PendingQoS2{topic, message};
+                }
             }
+
+            fullPayload += message;
+
+            // remaining length calculation
+            uint32_t remLen = fullPayload.size();
+            // for simplicity assume <128
+            header.push_back(static_cast<char>(remLen));
+
+            packet.insert(packet.end(), header.begin(), header.end());
+            packet.insert(packet.end(), fullPayload.begin(), fullPayload.end());
+
+            // send to subscribers
+            send(sock, packet.data(), packet.size(), 0);
         }
     }
 }
@@ -304,16 +467,17 @@ void mqttbroker::handleSubscribe(int client_fd, const std::vector<uint8_t> &buff
         std::string topic(buffer.begin() + offset, buffer.begin() + offset + topicLen);
         offset += topicLen;
 
-        uint8_t qos = buffer[offset]; // usually 0
+        uint8_t qos = buffer[offset]; // requested QoS
         offset++;
 
         {
             std::lock_guard<std::mutex> lock(subMutex);
-            topicSubscribers[topic].insert(client_fd);
+            topicSubscribers[topic][client_fd] = qos;
         }
 
-        Logger::log(LEVEL::INFO, "Client %d subscribed to topic '%s'", client_fd, topic.c_str());
-        returnCodes.push_back(0x00); // Always grant QoS 0 for now
+        Logger::log(LEVEL::INFO, "Client %d subscribed to topic '%s' (QoS %u)", client_fd, topic.c_str(), qos);
+        // grant exactly the requested QoS (0,1,2) even if we don't fully support >1
+        returnCodes.push_back(qos);
     }
 
     // Build SUBACK
