@@ -28,12 +28,6 @@ struct Session
     std::unordered_set<std::string> subscriptions;
 };
 
-struct RemainingLengthResult
-{
-    uint32_t value;
-    uint8_t bytesUsed;
-};
-
 struct PendingQoS2
 {
     std::string topic;

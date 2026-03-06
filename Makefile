@@ -1,8 +1,8 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -Isrc
+CXXFLAGS = -std=c++17 -Wall -Wextra -Isrc -Iinclude
 TARGET = mqtt-broker
 SRCDIR = src
-SOURCES = $(SRCDIR)/main.cpp $(SRCDIR)/client.cpp $(SRCDIR)/server.cpp
+SOURCES = $(SRCDIR)/main.cpp $(SRCDIR)/mqttbroker.cpp $(SRCDIR)/json_parser.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 
 all: $(TARGET)

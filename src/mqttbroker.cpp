@@ -3,15 +3,15 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
-#include "include/mqtt_utils.h"
-#include "include/mqttbroker.h"
-#include "include/logger.h"
+#include "mqtt_utils.h"
+#include "mqttbroker.h"
+#include "logger.h"
 
 #define SUB_ACK 0x90
-#define PUBACK 0x40  // PUBACK control packet type (4 << 4)
-#define PUBREC 0x50  // PUBREC control packet type (5 << 4)
-#define PUBREL 0x62  // PUBREL control packet type (6 << 4) with flags 0b0010
-#define PUBCOMP 0x70 // PUBCOMP control packet type (7 << 4)
+#define PUBACK_TYPE 0x40  // PUBACK control packet type (4 << 4)
+#define PUBREC_TYPE 0x50  // PUBREC control packet type (5 << 4)
+#define PUBREL_TYPE 0x62  // PUBREL control packet type (6 << 4) with flags 0b0010
+#define PUBCOMP_TYPE 0x70 // PUBCOMP control packet type (7 << 4)
 
 mqttbroker::mqttbroker(int port) : port(port), server_fd(-1) {}
 
@@ -189,13 +189,14 @@ void mqttbroker::handleConnect(int client_fd, const std::vector<uint8_t> &buffer
     std::lock_guard<std::mutex> lock(sessionMutex);
 
     // create new session or resume existing
-    if (!sessions.contains(clientId) || cleanSession)
+    auto it = sessions.find(clientId);
+    if (it == sessions.end() || cleanSession)
     {
         sessions[clientId] = Session{client_fd, cleanSession, {}};
     }
     else
     {
-        sessions[clientId].socket = client_fd; // resume
+        it->second.socket = client_fd; // resume
     }
 
     // send connack
@@ -249,7 +250,7 @@ void mqttbroker::handlePublish(int client_fd, const std::vector<uint8_t> &buffer
             inflightIncoming[client_fd][packetId] = PendingQoS2{topic, payload};
         }
         uint8_t rec[4];
-        rec[0] = PUBREC;
+        rec[0] = PUBREC_TYPE;
         rec[1] = 0x02;
         rec[2] = packetId >> 8;
         rec[3] = packetId & 0xFF;
@@ -264,7 +265,7 @@ void mqttbroker::handlePublish(int client_fd, const std::vector<uint8_t> &buffer
     if (qos == 1)
     {
         uint8_t ack[4];
-        ack[0] = PUBACK;
+        ack[0] = PUBACK_TYPE;
         ack[1] = 0x02; // remaining length
         ack[2] = packetId >> 8;
         ack[3] = packetId & 0xFF;
@@ -283,7 +284,7 @@ void mqttbroker::handlePubrec(int client_fd, const std::vector<uint8_t> &buffer,
 
     // send PUBREL
     uint8_t rel[4];
-    rel[0] = PUBREL;
+    rel[0] = PUBREL_TYPE;
     rel[1] = 0x02;
     rel[2] = packetId >> 8;
     rel[3] = packetId & 0xFF;
@@ -320,7 +321,7 @@ void mqttbroker::handlePubrel(int client_fd, const std::vector<uint8_t> &buffer,
 
     // respond with PUBCOMP
     uint8_t comp[4];
-    comp[0] = PUBCOMP;
+    comp[0] = PUBCOMP_TYPE;
     comp[1] = 0x02;
     comp[2] = packetId >> 8;
     comp[3] = packetId & 0xFF;

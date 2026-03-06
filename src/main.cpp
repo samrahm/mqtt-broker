@@ -1,20 +1,20 @@
 #include <iostream>
-#include "include/mqttbroker.h"
-#include "include/json_parser.h"
+#include "mqttbroker.h"
+#include "json_parser.h"
 
 int main()
 {
     // load the json config
-    BrokerConfig config = JSONParser::loadConfig("config.json");
+    BrokerConfig config = JSONParser::loadConfig("config/config.json");
 
     // create broker instance
 
     std::cout << "MQTT Broker starting..." << std::endl;
     std::cout << "Port: " << config.port << std::endl;
-    std::cout << "Max Clients: " << config.maxClients << std::endl;
+    std::cout << "Max Clients: " << config.max_clients << std::endl;
 
     mqttbroker broker(config.port);
-    mqttbroker.start();
+    broker.start();
 
     return 0;
 }
