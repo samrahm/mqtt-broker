@@ -1,0 +1,23 @@
+[INFO]  Sat Jan 17 18:18:57 2026  MQTT Broker started on port 0
+[INFO]  Sat Jan 17 18:18:57 2026  MQTT Broker started on port 0
+[INFO]  Sat Jan 17 18:18:57 2026  MQTT Broker started on port 0
+[INFO]  Sat Jan 17 18:18:57 2026  MQTT Broker started on port 1884
+[INFO]  Sat Jan 17 18:18:57 2026  MQTT Broker started on port 1884
+[INFO]  Sat Jan 17 18:18:57 2026  client 4 connected
+[INFO]  Sat Jan 17 18:18:57 2026  sent CONNACK to client 4
+[INFO]  Sat Jan 17 18:18:57 2026  Client 4 subscribed to topic 'test/qos0' (QoS 0)
+[INFO]  Sat Jan 17 18:18:57 2026  client 5 connected
+[INFO]  Sat Jan 17 18:18:57 2026  sent CONNACK to client 5
+[INFO]  Sat Jan 17 18:18:57 2026  published message to topic 'test/qos0': helloà
+[DEBUG]  Sat Jan 17 18:18:57 2026  Matching subscription 'test/qos0' with topic 'test/qos0'
+[INFO]  Sat Jan 17 18:18:57 2026  processing failed : 5
+[INFO]  Sat Jan 17 18:18:57 2026  client 6 connected
+[INFO]  Sat Jan 17 18:18:57 2026  sent CONNACK to client 6
+[INFO]  Sat Jan 17 18:18:57 2026  published message to topic 'test/qos0': hi i am the publisher temp24à
+[DEBUG]  Sat Jan 17 18:18:57 2026  Matching subscription 'test/qos0' with topic 'test/qos0'
+[INFO]  Sat Jan 17 18:18:57 2026  processing failed : 6
+[WARNING]  Sat Jan 17 18:18:57 2026  unsupported packet type: 12
+[INFO]  Sat Jan 17 18:18:57 2026  processing failed : 4
+[INFO]  Sat Jan 17 18:18:57 2026  client 5 connected
+[INFO]  Sat Jan 17 18:18:57 2026  sent CONNACK to client 5
+[INFO]  Sat Jan 17 18:18:57 2026  Client 5 subscribed to topic 'test/qos0' (QoS 0)
