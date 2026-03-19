@@ -12,7 +12,8 @@ enum class LEVEL
     INFO,
     DEBUG,
     VERBOSE,
-    WARNING
+    WARNING,
+    ERROR
 };
 
 class Logger
@@ -34,6 +35,9 @@ private:
             label = "VERBOSE";
             break;
         case LEVEL::WARNING:
+            label = "WARNING";
+            break;
+        case LEVEL::ERROR:
             label = "WARNING";
             break;
 

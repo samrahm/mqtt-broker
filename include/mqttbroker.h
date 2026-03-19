@@ -53,19 +53,22 @@ private:
     void handleClient(int client_fd);
     bool processPacket(int client_fd);
 
-    void handleConnect(int client_fd, const std::vector<uint8_t> &buffer);
+    void handleConnect(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength);
     void sendConnack(int client_fd);
 
-    void handlePublish(int client_fd, const std::vector<uint8_t> &buffer, int bytes);
-    void handlePubrec(int client_fd, const std::vector<uint8_t> &buffer, int bytes);
-    void handlePubrel(int client_fd, const std::vector<uint8_t> &buffer, int bytes);
-    void handlePubcomp(int client_fd, const std::vector<uint8_t> &buffer, int bytes);
+    void handlePublish(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength, uint8_t flags);
+    void handlePubrec(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength);
+    void handlePubrel(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength);
+    void handlePubcomp(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength);
+    void sendPingResp(int client_fd);
+        
 
     void logPublish(int client_fd, const std::string &topic, const std::string &message);
     void forwardToSubscribers(const std::string &topic, const std::string &message, int exclude_fd = -1);
     bool matchTopic(const std::string &sub, const std::string &topic);
 
-    void handleSubscribe(int client_fd, const std::vector<uint8_t> &buffer);
+    void handleSubscribe(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength);
+    void handleUnsubscribe(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength);
 
     int server_fd;
     int port;

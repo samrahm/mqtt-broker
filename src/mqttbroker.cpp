@@ -1,5 +1,8 @@
 #include <cstring>
 #include <iostream>
+#include <vector>
+#include <cstdint>
+#include <stdexcept>
 #include <unistd.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
@@ -99,118 +102,127 @@ bool mqttbroker::processPacket(int client_fd)
 
     buffer.resize(bytes);
 
-    // classify according to packet type
-    uint8_t firstByte = buffer[0];
-    uint8_t packetType = firstByte >> 4; // right shift to keep upper 4 bits containing packet type
-    
-    // lower 4 bits with the flags 
-    uint8_t flags = firstByte & 0x0F;
+    size_t index = 0;
 
-    // uint8_t qos = (buffer[0] >> 1) & 0x03; // bits 1–2 specifying QoS level ( only for publish ) SWITCH LOGIC PLS 
-    switch (static_cast<Signal>(packetType))
-    {
-    // connect received
-    case Signal::CONNECT:
-        // error handling for lower 4 bits if they are not 0
-        if(flags != 0x00){
-            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
+    // Loop through the buffer to handle multiple packets
+    while (index < buffer.size()) {
+        size_t packetStartIndex = index; // Save where this specific packet starts
+        // classify according to packet type
+        uint8_t firstByte = buffer[index++];
+        uint8_t type = firstByte >> 4;
+
+        // lower 4 bits with the flags 
+        uint8_t flags = firstByte & 0x0F;
+
+        // flag check
+        if (!isValidFlags(type, flags)) {
+            Logger::log(LEVEL::ERROR, "Protocol Violation: Malformed Packet. Invalid Flags for Type %d", type);
             close(client_fd);
+            return false;
         }
-        Logger::log(LEVEL::INFO, "client %d connected", client_fd);
-        handleConnect(client_fd, buffer);
-        break;
-    
-    // publish received
-    case Signal::PUBLISH:
-        // has value other than 0x00 for lower 4 bits of first byte
-        handlePublish(client_fd, buffer, bytes);
-        break;
 
-    // subscribe received
-    case Signal::SUBSCRIBE:
-        if(flags != 0x02){
-            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
+        // remaining length check (2nd byte)
+        uint32_t remainingLength;
+        try {
+            remainingLength = decodeVarint(buffer, index);
+        } catch (...) {
+            // Malformed length = Protocol Violation
             close(client_fd);
-        }    
-        handleSubscribe(client_fd, buffer);
-        break;
-    
-    // unsubscribe received
-    case Signal::UNSUBSCRIBE:
-        if(flags != 0x02){
-            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
-            close(client_fd);
-        }    
-        handleUnsubscribe(client_fd, buffer);
-        break;
-
-    // puback received (QoS 1 acknowledgement)
-    case Signal::PUBACK:
-        // buffer elements: fixed header, remaining length, packet id
-        if(flags != 0x00){
-            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
-            close(client_fd);
+            return false;
         }
-        
-        if (bytes >= 4)
+
+        // Check if the actual bytes received match what the header claims
+        if (buffer.size() < (index + remainingLength)) {
+            Logger::log(LEVEL::WARNING, "Partial packet received. Waiting for more data...");
+            
+            // TODO: In a real broker, you'd save this buffer and wait for more
+            break; 
+        }
+
+        // We save the position where the next packet SHOULD start
+        size_t nextPacketIndex = index + remainingLength;
+
+        // uint8_t qos = (buffer[0] >> 1) & 0x03; // bits 1–2 specifying QoS level ( only for publish ) TODO
+        switch (static_cast<Signal>(type))
         {
-            uint16_t pid = (buffer[2] << 8) | buffer[3];
-            Logger::log(LEVEL::DEBUG, "received PUBACK from %d for packet %u", client_fd, pid);
+        // connect received
+        case Signal::CONNECT:
+            Logger::log(LEVEL::INFO, "client %d connected", client_fd);
+            handleConnect(client_fd, buffer, index, remainingLength);
+            break;
+        
+        // publish received
+        case Signal::PUBLISH:
+            // has value other than 0x00 for lower 4 bits of first byte
+            handlePublish(client_fd, buffer, index, remainingLength, flags);
+            break;
+
+        // subscribe received
+        case Signal::SUBSCRIBE:    
+            handleSubscribe(client_fd, buffer, index, remainingLength);
+            break;
+        
+        // unsubscribe received
+        case Signal::UNSUBSCRIBE:
+            handleUnsubscribe(client_fd, buffer, index, remainingLength);
+            break;
+        
+        case Signal::PINGREQ:
+            // Always send PINGRESP immediately
+            sendPingResp(client_fd);
+            break;
+
+        // puback received (QoS 1 acknowledgement)
+        case Signal::PUBACK:
+            // buffer elements: fixed header, remaining length, packet id      
+            if (bytes >= 4)
+            {
+                uint16_t pid = (buffer[2] << 8) | buffer[3];
+                Logger::log(LEVEL::DEBUG, "received PUBACK from %d for packet %u", client_fd, pid);
+            }
+            break;
+
+        // pubrec received (QoS 2 first step)
+        case Signal::PUBREC:
+            handlePubrec(client_fd, buffer, index, remainingLength);
+            break;
+
+        // pubrel received (QoS 2 second step)
+        case Signal::PUBREL:
+            handlePubrel(client_fd, buffer, index, remainingLength);
+            break;
+
+        // pubcomp received (QoS 2 completion)
+        case Signal::PUBCOMP: 
+            handlePubcomp(client_fd, buffer, index, remainingLength);
+            break;
+
+        // disconnect received
+        case Signal::DISCONNECT:  
+            close(client_fd);
+            Logger::log(LEVEL::INFO, "client %d disconnected", client_fd);
+            return false;
+
+        // auth received (mqtt5.0)
+
+        // unsupported type
+        default:
+            Logger::log(LEVEL::WARNING, "unsupported packet type: %d", type);
+            break;
         }
-        break;
 
-    // pubrec received (QoS 2 first step)
-    case Signal::PUBREC:
-        if(flags != 0x00){
-            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
-            close(client_fd);
-        }
-        handlePubrec(client_fd, buffer, bytes);
-        break;
-
-    // pubrel received (QoS 2 second step)
-    case Signal::PUBREL:
-        if(flags != 0x02){
-            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
-            close(client_fd);
-        }
-        handlePubrel(client_fd, buffer, bytes);
-        break;
-
-    // pubcomp received (QoS 2 completion)
-    case Signal::PUBCOMP:
-        if(flags != 0x00){
-            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
-            close(client_fd);
-        }    
-        handlePubcomp(client_fd, buffer, bytes);
-        break;
-
-    // disconnect received
-    case Signal::DISCONNECT:
-        if(flags != 0x00){
-            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
-            close(client_fd);
-        }    
-        close(client_fd);
-        Logger::log(LEVEL::INFO, "client %d disconnected", client_fd);
-        return false;
-
-    // auth received (mqtt5.0)
-
-    // unsupported type
-    default:
-        Logger::log(LEVEL::WARNING, "unsupported packet type: %d", packetType);
-        return false;
+        // move indx to start of next packet
+        index = nextPacketIndex;
+        
+        Logger::log(LEVEL::DEBUG, "Processed one packet. Remaining buffer bytes: %zu", buffer.size() - index);
     }
+
     return true;
 }
 
 // handling connect
 void mqttbroker::handleConnect(int client_fd, const std::vector<uint8_t> &buffer)
 {
-    
-
     // byte 3 to 8 (1 to 6 in the remaining length)
 
     // protocol check 
@@ -396,6 +408,13 @@ void mqttbroker::handlePubcomp(int client_fd, const std::vector<uint8_t> &buffer
     }
 }
 
+void sendPingResp(int client_fd)
+{
+    // TODO: handle functionality
+    Logger::log(LEVEL::INFO, "published message to topic '%s': %s", topic.c_str(), message.c_str());
+}
+
+
 void mqttbroker::logPublish(int client_fd, const std::string &topic, const std::string &message)
 {
     Logger::log(LEVEL::INFO, "published message to topic '%s': %s", topic.c_str(), message.c_str());
@@ -543,4 +562,45 @@ void mqttbroker::handleSubscribe(int client_fd, const std::vector<uint8_t> &buff
     suback.insert(suback.end(), returnCodes.begin(), returnCodes.end());
 
     send(client_fd, suback.data(), suback.size(), 0);
+}
+
+uint32_t decodeVarint(const std::vector<uint8_t>& stream, size_t& index) {
+    uint32_t multiplier = 1;
+    uint32_t value = 0;
+    uint8_t encodedByte;
+
+    do {
+        if (index >= stream.size()) {
+            throw std::runtime_error("Unexpected end of stream");
+        }
+
+        encodedByte = stream[index++];
+        
+        // Add the lower 7 bits to the value
+        value += (encodedByte & 127) * multiplier;
+
+        // Security check for 4-byte limit (as per your logic)
+        if (multiplier > 128 * 128 * 128) {
+            throw std::runtime_error("Malformed Variable Byte Integer: Too many bytes");
+        }
+
+        multiplier *= 128;
+
+    } while ((encodedByte & 128) != 0); // Continue if the continuation bit (MSB) is 1
+
+    return value;
+}
+
+bool isValidFlags(uint8_t type, uint8_t flags) {
+    switch (type) {
+        case 1:  return flags == 0x00; // CONNECT
+        case 3:  return true;          // PUBLISH (All flags 0-15 are valid)
+        case 4:  return flags == 0x02; // PUBREL
+        case 8:  return flags == 0x02; // SUBSCRIBE
+        case 10: return flags == 0x02; // UNSUBSCRIBE
+        case 12: return flags == 0x00; // PINGREQ
+        case 13: return flags == 0x00; // PINGRESP
+        case 14: return flags == 0x00; // DISCONNECT
+        default: return (flags == 0x00); // Most others (CONNACK, PUBACK, etc.)
+    }
 }
