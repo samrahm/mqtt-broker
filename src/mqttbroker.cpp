@@ -100,30 +100,58 @@ bool mqttbroker::processPacket(int client_fd)
     buffer.resize(bytes);
 
     // classify according to packet type
+    uint8_t firstByte = buffer[0];
+    uint8_t packetType = firstByte >> 4; // right shift to keep upper 4 bits containing packet type
+    
+    // lower 4 bits with the flags 
+    uint8_t flags = firstByte & 0x0F;
 
-    uint8_t packetType = buffer[0] >> 4;   // right shift to keep upper 4 bits containing packet type
-    uint8_t qos = (buffer[0] >> 1) & 0x03; // bits 1–2 specifying QoS level
+    // uint8_t qos = (buffer[0] >> 1) & 0x03; // bits 1–2 specifying QoS level ( only for publish ) SWITCH LOGIC PLS 
     switch (static_cast<Signal>(packetType))
     {
     // connect received
     case Signal::CONNECT:
+        // error handling for lower 4 bits if they are not 0
+        if(flags != 0x00){
+            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
+            close(client_fd);
+        }
         Logger::log(LEVEL::INFO, "client %d connected", client_fd);
         handleConnect(client_fd, buffer);
         break;
-
+    
     // publish received
     case Signal::PUBLISH:
+        // has value other than 0x00 for lower 4 bits of first byte
         handlePublish(client_fd, buffer, bytes);
         break;
 
     // subscribe received
     case Signal::SUBSCRIBE:
+        if(flags != 0x02){
+            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
+            close(client_fd);
+        }    
         handleSubscribe(client_fd, buffer);
+        break;
+    
+    // unsubscribe received
+    case Signal::UNSUBSCRIBE:
+        if(flags != 0x02){
+            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
+            close(client_fd);
+        }    
+        handleUnsubscribe(client_fd, buffer);
         break;
 
     // puback received (QoS 1 acknowledgement)
     case Signal::PUBACK:
         // buffer elements: fixed header, remaining length, packet id
+        if(flags != 0x00){
+            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
+            close(client_fd);
+        }
+        
         if (bytes >= 4)
         {
             uint16_t pid = (buffer[2] << 8) | buffer[3];
@@ -133,24 +161,42 @@ bool mqttbroker::processPacket(int client_fd)
 
     // pubrec received (QoS 2 first step)
     case Signal::PUBREC:
+        if(flags != 0x00){
+            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
+            close(client_fd);
+        }
         handlePubrec(client_fd, buffer, bytes);
         break;
 
     // pubrel received (QoS 2 second step)
     case Signal::PUBREL:
+        if(flags != 0x02){
+            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
+            close(client_fd);
+        }
         handlePubrel(client_fd, buffer, bytes);
         break;
 
     // pubcomp received (QoS 2 completion)
     case Signal::PUBCOMP:
+        if(flags != 0x00){
+            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
+            close(client_fd);
+        }    
         handlePubcomp(client_fd, buffer, bytes);
         break;
 
     // disconnect received
     case Signal::DISCONNECT:
+        if(flags != 0x00){
+            Logger::log(LEVEL::WARNING, "malformed packet. client disconnected");
+            close(client_fd);
+        }    
         close(client_fd);
         Logger::log(LEVEL::INFO, "client %d disconnected", client_fd);
         return false;
+
+    // auth received (mqtt5.0)
 
     // unsupported type
     default:
@@ -163,6 +209,13 @@ bool mqttbroker::processPacket(int client_fd)
 // handling connect
 void mqttbroker::handleConnect(int client_fd, const std::vector<uint8_t> &buffer)
 {
+    
+
+    // byte 3 to 8 (1 to 6 in the remaining length)
+
+    // protocol check 
+
+
     // parse connect
     auto rl = parseRemainingLength(buffer);
     size_t fixedHeaderSize = 1 + rl.bytesUsed;
