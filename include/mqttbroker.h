@@ -5,6 +5,7 @@
 #include <netinet/in.h>
 #include <vector>
 #include <unordered_map>
+#include <queue>
 #include <unordered_set>
 #include <mutex>
 #include <sstream>
@@ -34,6 +35,10 @@ struct Session
     bool cleanSession;
     std::unordered_set<std::string> subscriptions;
     // unacknowledged qos msgs. queued msgs,
+    // For Non-Clean Sessions:
+    std::queue<MQTTMessage> offlineQueue;       // Messages to send upon reconnect
+    std::map<uint16_t, MQTTMessage> inflight;  // PacketId -> Message (awaiting ACK)
+    std::set<uint16_t> qos2Receiving;          // PacketIds currently in the 4-way handshake
 };
 
 struct PendingQoS2
@@ -53,10 +58,10 @@ private:
     void handleClient(int client_fd);
     bool processPacket(int client_fd);
 
-    void handleConnect(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength);
-    void sendConnack(int client_fd);
+    void handleConnect(int client_fd, const std::vector<uint8_t> &buffer, size_t &index, uint32_t remainingLength);
+    void sendConnack(int client_fd, uint8_t ackFlag, uint8_t returnCode);
 
-    void handlePublish(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength, uint8_t flags);
+    void handlePublish(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength, uint8_t qos, bool retain, bool dup);
     void handlePubrec(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength);
     void handlePubrel(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength);
     void handlePubcomp(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength);

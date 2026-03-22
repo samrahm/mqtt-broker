@@ -9,6 +9,7 @@
 #include "mqtt_utils.h"
 #include "mqttbroker.h"
 #include "logger.h"
+#include "helper.cpp"
 
 #define SUB_ACK 0x90
 #define PUBACK_TYPE 0x40  // PUBACK control packet type (4 << 4)
@@ -96,7 +97,6 @@ bool mqttbroker::processPacket(int client_fd)
             Logger::log(LEVEL::WARNING, "receive failed on socket %d", client_fd);
         }
         buffer.clear();
-        // close(client_fd);    // redundant call
         return false;
     }
 
@@ -105,44 +105,74 @@ bool mqttbroker::processPacket(int client_fd)
     size_t index = 0;
 
     // Loop through the buffer to handle multiple packets
-    while (index < buffer.size()) {
+    while (index < buffer.size())
+    {
         size_t packetStartIndex = index; // Save where this specific packet starts
         // classify according to packet type
         uint8_t firstByte = buffer[index++];
         uint8_t type = firstByte >> 4;
 
-        // lower 4 bits with the flags 
+        // lower 4 bits with the flags
         uint8_t flags = firstByte & 0x0F;
 
-        // flag check
-        if (!isValidFlags(type, flags)) {
+        // flag check (all EXCEPT PUBLISH)
+        if (!isValidFlags(type, flags))
+        {
             Logger::log(LEVEL::ERROR, "Protocol Violation: Malformed Packet. Invalid Flags for Type %d", type);
             close(client_fd);
             return false;
         }
 
+        // flags check for PUBLISH packet
+        if (type == static_cast<uint8_t>(Signal::PUBLISH))
+        {
+            // Bit 3: Duplicate Flag
+            bool dup = (flags & 0x08) >> 3;
+
+            // Bits 2-1: QoS Level
+            // Mask with 0110 (which is 0x06) then shift right by 1
+            uint8_t qos = (flags & 0x06) >> 1;
+
+            // Bit 0: Retain Flag
+            bool retain = (flags & 0x01);
+
+            // Validation Check: MQTT Spec says QoS 3 (11) is invalid
+            if (qos == 3)
+            {
+                Logger::log(LEVEL::ERROR, "Protocol Violation: QoS 3 is not allowed");
+                close(client_fd);
+                return false;
+            }
+
+            Logger::log(LEVEL::DEBUG, "Publish Detected: QoS %d, Retain %d, Dup %d", qos, retain, dup);
+        }
+
         // remaining length check (2nd byte)
         uint32_t remainingLength;
-        try {
+        try
+        {
             remainingLength = decodeVarint(buffer, index);
-        } catch (...) {
+        }
+        catch (...)
+        {
             // Malformed length = Protocol Violation
+            Logger::log(LEVEL::ERROR, "Protocol Violation: Malformed Length.");
             close(client_fd);
             return false;
         }
 
         // Check if the actual bytes received match what the header claims
-        if (buffer.size() < (index + remainingLength)) {
+        if (buffer.size() < (index + remainingLength))
+        {
             Logger::log(LEVEL::WARNING, "Partial packet received. Waiting for more data...");
-            
+
             // TODO: In a real broker, you'd save this buffer and wait for more
-            break; 
+            break;
         }
 
         // We save the position where the next packet SHOULD start
         size_t nextPacketIndex = index + remainingLength;
 
-        // uint8_t qos = (buffer[0] >> 1) & 0x03; // bits 1–2 specifying QoS level ( only for publish ) TODO
         switch (static_cast<Signal>(type))
         {
         // connect received
@@ -150,23 +180,23 @@ bool mqttbroker::processPacket(int client_fd)
             Logger::log(LEVEL::INFO, "client %d connected", client_fd);
             handleConnect(client_fd, buffer, index, remainingLength);
             break;
-        
+
         // publish received
         case Signal::PUBLISH:
             // has value other than 0x00 for lower 4 bits of first byte
-            handlePublish(client_fd, buffer, index, remainingLength, flags);
+            handlePublish(client_fd, buffer, index, remainingLength, qos, retain, dup);
             break;
 
         // subscribe received
-        case Signal::SUBSCRIBE:    
+        case Signal::SUBSCRIBE:
             handleSubscribe(client_fd, buffer, index, remainingLength);
             break;
-        
+
         // unsubscribe received
         case Signal::UNSUBSCRIBE:
             handleUnsubscribe(client_fd, buffer, index, remainingLength);
             break;
-        
+
         case Signal::PINGREQ:
             // Always send PINGRESP immediately
             sendPingResp(client_fd);
@@ -174,7 +204,7 @@ bool mqttbroker::processPacket(int client_fd)
 
         // puback received (QoS 1 acknowledgement)
         case Signal::PUBACK:
-            // buffer elements: fixed header, remaining length, packet id      
+            // buffer elements: fixed header, remaining length, packet id
             if (bytes >= 4)
             {
                 uint16_t pid = (buffer[2] << 8) | buffer[3];
@@ -193,12 +223,12 @@ bool mqttbroker::processPacket(int client_fd)
             break;
 
         // pubcomp received (QoS 2 completion)
-        case Signal::PUBCOMP: 
+        case Signal::PUBCOMP:
             handlePubcomp(client_fd, buffer, index, remainingLength);
             break;
 
         // disconnect received
-        case Signal::DISCONNECT:  
+        case Signal::DISCONNECT:
             close(client_fd);
             Logger::log(LEVEL::INFO, "client %d disconnected", client_fd);
             return false;
@@ -213,7 +243,7 @@ bool mqttbroker::processPacket(int client_fd)
 
         // move indx to start of next packet
         index = nextPacketIndex;
-        
+
         Logger::log(LEVEL::DEBUG, "Processed one packet. Remaining buffer bytes: %zu", buffer.size() - index);
     }
 
@@ -221,56 +251,143 @@ bool mqttbroker::processPacket(int client_fd)
 }
 
 // handling connect
-void mqttbroker::handleConnect(int client_fd, const std::vector<uint8_t> &buffer)
+void mqttbroker::handleConnect(int client_fd, const std::vector<uint8_t> &buffer, size_t &index, uint32_t remainingLength)
 {
-    // byte 3 to 8 (1 to 6 in the remaining length)
-
-    // protocol check 
-
-
-    // parse connect
-    auto rl = parseRemainingLength(buffer);
-    size_t fixedHeaderSize = 1 + rl.bytesUsed;
-
-    size_t offset = fixedHeaderSize;
-
-    // check protocol/ version
-    std::string protocolName = get_string(buffer, offset);
-
-    uint8_t protocolLevel = get_uint8(buffer, offset);
-    offset += 1;
-
-    uint8_t connectFlags = get_uint8(buffer, offset);
-    offset += 1;
-
-    uint16_t keepAlive = get_uint16(buffer, offset);
-    offset += 2;
-
-    // extract clientID, clean session
-    std::string clientId = get_string(buffer, offset);
-    bool cleanSession = connectFlags & 0x02;
-
-    // prevents other threads from accessing sessions
-    std::lock_guard<std::mutex> lock(sessionMutex);
-
-    // create new session or resume existing
-    auto it = sessions.find(clientId);
-    if (it == sessions.end() || cleanSession)
+    // byte 3 to 8 (1 to 6 in the remaining length) for protocol name
+    // We need at least 2 bytes for length + 4 bytes for "MQTT" + 1 byte for level = 7 bytes
+    if (remainingLength < 7)
     {
-        sessions[clientId] = Session{client_fd, cleanSession, {}};
+        Logger::log(LEVEL::ERROR, "CONNECT packet too short for protocol headers");
+        close(client_fd);
+        return;
+    }
+
+    // protocol check
+    uint16_t protoNameLen = (buffer[index] << 8) | buffer[index + 1];
+    index += 2;
+
+    if (protoNameLen != 4)
+    {
+        Logger::log(LEVEL::ERROR, "Protocol Name Length is not 4. Violation.");
+        close(client_fd);
+        return;
+    }
+
+    std::string protoName(reinterpret_cast<const char *>(&buffer[index]), protoNameLen);
+    index += protoNameLen;
+
+    if (protoName != "MQTT")
+    {
+        Logger::log(LEVEL::ERROR, "Protocol Name is not 'MQTT'. Disconnecting.");
+        close(client_fd);
+        return;
+    }
+
+    uint8_t protocolLevel = buffer[index++];
+
+    if (protocolLevel == 4)
+    {
+        Logger::log(LEVEL::INFO, "Version 3.1.1 detected for client %d", client_fd);
+        proceedToV311Checklist(client_fd, buffer, index);
+    }
+    else if (protocolLevel == 5)
+    {
+        Logger::log(LEVEL::INFO, "Version 5.0 detected for client %d", client_fd);
+        proceedToV50Checklist(client_fd, buffer, index);
     }
     else
     {
-        it->second.socket = client_fd; // resume
-    }
+        Logger::log(LEVEL::WARNING, "Unsupported Protocol Level: %d. Sending CONNACK 0x01", protocolLevel);
 
-    // send connack
-    sendConnack(client_fd);
+        // Return Code 0x01: Unacceptable protocol version
+        // Packet: [CONNACK Type (0x20), Remaining Len (2), Ack Flags (0), Return Code (1)]
+        // send connack
+        sendConnack(client_fd, 0x00, 0x01);
+        close(client_fd);
+    }
 }
 
-void mqttbroker::sendConnack(int client_fd)
+void mqttbroker::proceedToV311Checklist(int client_fd, const std::vector<uint8_t> &buffer, size_t &index) {
+    // --- 1. Extract Variable Header ---
+    uint8_t connectFlags = buffer[index++];
+    
+    // Bit breakdown of connectFlags:
+    bool reserved     = connectFlags & 0x01; // MUST be 0
+    bool cleanSession = connectFlags & 0x02;
+    bool willFlag     = connectFlags & 0x04;
+    uint8_t willQoS   = (connectFlags & 0x18) >> 3;
+    bool willRetain   = connectFlags & 0x20;
+    bool passwordFlag = connectFlags & 0x40;
+    bool usernameFlag = connectFlags & 0x80;
+
+    if (reserved) { 
+        close(client_fd); // Protocol violation
+        return; 
+    }
+
+    uint16_t keepAlive = (buffer[index] << 8) | buffer[index + 1];
+    index += 2;
+
+    // --- 2. Extract Payload (Order matters!) ---
+    std::string clientId = get_string(buffer, index);
+    
+    // Optional fields (only read if flags are set)
+    if (willFlag) {
+        std::string willTopic = get_string(buffer, index);
+        std::string willMsg = get_string(buffer, index);
+        // Store these in your session
+    }
+    if (usernameFlag) std::string user = get_string(buffer, index);
+    if (passwordFlag) std::string pass = get_string(buffer, index);
+
+    // --- 3. Handle Session Logic (The QoS/Persistence part) ---
+    handleSessionLifecycle(client_fd, clientId, cleanSession);
+}
+
+void mqttbroker::handleSessionLifecycle(int client_fd, std::string clientId, bool cleanSession) {
+    std::lock_guard<std::mutex> lock(sessionMutex);
+
+    bool sessionPresent = false;
+    auto it = sessions.find(clientId);
+
+    if (it != sessions.end()) {
+        // EXISTING SESSION FOUND
+        if (cleanSession) {
+            // Client wants a fresh start: Wipe old data
+            sessions.erase(it);
+            sessions[clientId] = Session(client_fd, true);
+            sessionPresent = false;
+        } else {
+            // RESUME SESSION: Update socket and prepare to send stored QoS messages
+            it->second.socket = client_fd;
+            sessionPresent = true;
+            resumeDelayedMessages(clientId); 
+        }
+    } else {
+        // NEW SESSION
+        sessions[clientId] = Session(client_fd, cleanSession);
+        sessionPresent = false;
+    }
+
+    // --- 4. Send CONNACK ---
+    // Byte 1: 0x20 (Fixed Header)
+    // Byte 2: 0x02 (Remaining Length)
+    // Byte 3: sessionPresent ? 0x01 : 0x00 (Connect Acknowledge Flags)
+    // Byte 4: 0x00 (Connection Accepted Return Code)
+    sendConnack(client_fd, sessionPresent, 0x00)
+}
+
+void mqttbroker::proceedToV50Checklist(int client_fd, const std::vector<uint8_t> &buffer, size_t &index)
 {
-    uint8_t connack[4] = {0x20, 0x02, 0x00, 0x00}; // connack header
+}
+
+void mqttbroker::sendConnack(int client_fd, uint8_t ackFlag, uint8_t returnCode) {
+    std::vector<uint8_t> packet = {
+        0x20,      // Byte 1: CONNACK Header
+        0x02,      // Byte 2: Remaining Length
+        ackFlag,      // Byte 3: Acknowledge Flags (Session Present = 0)
+        returnCode // Byte 4: The variable return code (0x00, 0x01, 0x04, etc.)
+    };
     send(client_fd, connack, sizeof(connack), 0);
     Logger::log(LEVEL::INFO, "sent CONNACK to client %d", client_fd);
 }
@@ -413,7 +530,6 @@ void sendPingResp(int client_fd)
     // TODO: handle functionality
     Logger::log(LEVEL::INFO, "published message to topic '%s': %s", topic.c_str(), message.c_str());
 }
-
 
 void mqttbroker::logPublish(int client_fd, const std::string &topic, const std::string &message)
 {
@@ -562,45 +678,4 @@ void mqttbroker::handleSubscribe(int client_fd, const std::vector<uint8_t> &buff
     suback.insert(suback.end(), returnCodes.begin(), returnCodes.end());
 
     send(client_fd, suback.data(), suback.size(), 0);
-}
-
-uint32_t decodeVarint(const std::vector<uint8_t>& stream, size_t& index) {
-    uint32_t multiplier = 1;
-    uint32_t value = 0;
-    uint8_t encodedByte;
-
-    do {
-        if (index >= stream.size()) {
-            throw std::runtime_error("Unexpected end of stream");
-        }
-
-        encodedByte = stream[index++];
-        
-        // Add the lower 7 bits to the value
-        value += (encodedByte & 127) * multiplier;
-
-        // Security check for 4-byte limit (as per your logic)
-        if (multiplier > 128 * 128 * 128) {
-            throw std::runtime_error("Malformed Variable Byte Integer: Too many bytes");
-        }
-
-        multiplier *= 128;
-
-    } while ((encodedByte & 128) != 0); // Continue if the continuation bit (MSB) is 1
-
-    return value;
-}
-
-bool isValidFlags(uint8_t type, uint8_t flags) {
-    switch (type) {
-        case 1:  return flags == 0x00; // CONNECT
-        case 3:  return true;          // PUBLISH (All flags 0-15 are valid)
-        case 4:  return flags == 0x02; // PUBREL
-        case 8:  return flags == 0x02; // SUBSCRIBE
-        case 10: return flags == 0x02; // UNSUBSCRIBE
-        case 12: return flags == 0x00; // PINGREQ
-        case 13: return flags == 0x00; // PINGRESP
-        case 14: return flags == 0x00; // DISCONNECT
-        default: return (flags == 0x00); // Most others (CONNACK, PUBACK, etc.)
-    }
 }
