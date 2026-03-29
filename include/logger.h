@@ -2,6 +2,9 @@
 #include <iostream>
 #include <stdio.h>
 #include <fstream>
+#include <ctime>
+#include <iomanip>
+#include <sstream>
 using namespace std;
 
 #undef FunctionName
@@ -54,6 +57,16 @@ private:
     Logger(const Logger &);
     Logger &operator=(const Logger &);
 
+private:
+    static string getCurrentTimestamp()
+    {
+        time_t now = time(nullptr);
+        struct tm *timeinfo = localtime(&now);
+        char buffer[100];
+        strftime(buffer, sizeof(buffer), "%a %b %d %H:%M:%S %Y", timeinfo);
+        return string(buffer);
+    }
+
 public:
     template <typename... T>
     static void log(LEVEL level, const char *message, T... arg)
@@ -66,17 +79,19 @@ public:
             return;
         }
 
+        string timestamp = getCurrentTimestamp();
+
         // console output : <TIMESTAMP> [LEVEL] <MESSAGE>
         // log entry : [LEVEL] <TIMESTAMP> <MESSAGE>
-        cout << __TIMESTAMP__ << " ";
+        cout << timestamp << " ";
         printf("[%s] ", label);
 
         fprintf(fp, "[%s] ", label);
-        fprintf(fp, " %s  ", __TIMESTAMP__);
+        fprintf(fp, " %s  ", timestamp.c_str());
 
         printf(message, arg...);
         printf("\n");
-        
+
         fprintf(fp, message, arg...);
         fprintf(fp, "\n");
 

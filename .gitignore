@@ -40,4 +40,7 @@
 # debug information files
 *.dwo
 
+Logs.txt
+mqtt-broker
+
 .vscode/
