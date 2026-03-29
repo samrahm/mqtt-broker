@@ -222,3 +222,66 @@
 [INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 4
 [DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 7
 [INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 7
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  client 5 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 5
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client 
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 5 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 5 subscribed to 'status/device1' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  client 4 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will message configured: topic=status/device1, qos=0, retain=0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client 
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 4 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 4 subscribed to 'data' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  MQTT Broker started on port 1884
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  client 4 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 4
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client  (cleanSession=1)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 4 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 4 subscribed to 'status/device1' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  client 5 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 5
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will message configured: topic=status/device1, qos=0, retain=0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client 
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 5 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 5 subscribed to 'data' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  MQTT Broker started on port 1884
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  client 4 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 4
+[INFO]  Thu Mar 19 13:55:00 2026  Empty ClientID provided. Assigned: client_4
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_4 (cleanSession=1)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 4 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 4 subscribed to 'status/device1' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  client 5 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 5
+[INFO]  Thu Mar 19 13:55:00 2026  Empty ClientID provided. Assigned: client_5
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will message configured: topic=status/device1, qos=0, retain=0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_5 (cleanSession=1)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 5 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 5 subscribed to 'data' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[WARNING]  Thu Mar 19 13:55:00 2026  Ungraceful disconnect detected for client_4 (fd 4)
+[WARNING]  Thu Mar 19 13:55:00 2026  Ungraceful disconnect detected for client_5 (fd 5)
+[INFO]  Thu Mar 19 13:55:00 2026  Publishing WILL message for client client_5 to topic 'status/device1'
+[INFO]  Thu Mar 19 13:55:00 2026  Internal publish to topic 'status/device1': DEVICE_CRASHED (QoS=0)

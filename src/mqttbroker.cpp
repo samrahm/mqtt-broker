@@ -77,73 +77,89 @@ void mqttbroker::handleClient(int client_fd)
 
     Logger::log(LEVEL::INFO, "New TCP connection established: fd %d", client_fd);
 
-    // 1. Main Listening Loop
-    while (true)
+    // --- 1. Main Listening Loop ---
+    // We loop as long as processPacket returns true (successful packet handling)
+    while (processPacket(client_fd, gracefulDisconnect))
     {
-        // Pass gracefulDisconnect by reference so processPacket can set it to true
-        if (!processPacket(client_fd, gracefulDisconnect))
+        // Optimization: Once the CONNECT packet is processed, 
+        // the clientIdMap will have the ID. We grab it once so we have it if the loop breaks.
+        if (clientId.empty())
         {
-            break;
+            std::lock_guard<std::mutex> lock(sessionMutex);
+            if (clientIdMap.count(client_fd))
+            {
+                clientId = clientIdMap[client_fd];
+            }
         }
     }
 
-    // 2. Identify the Client and Clean up clientIdMap
+    // --- 2. Post-Loop Identification ---
+    // If the loop broke immediately (client never sent CONNECT), clientId might still be empty.
+    // We check the map one last time just in case.
+    if (clientId.empty())
     {
         std::lock_guard<std::mutex> lock(sessionMutex);
         auto it = clientIdMap.find(client_fd);
         if (it != clientIdMap.end())
         {
             clientId = it->second;
-            clientIdMap.erase(it);
         }
     }
 
-    // 3. Handle Last Will & Global Cleanup
+    // --- 3. Handle Last Will & Global Cleanup ---
     if (!clientId.empty())
     {
-        // TRIGGER LAST WILL if they didn't say goodbye properly
+        // TRIGGER LAST WILL: Only if they didn't send a DISCONNECT packet
         if (!gracefulDisconnect)
         {
-            Logger::log(LEVEL::WARNING, "Ungraceful disconnect: %s (fd %d)", clientId.c_str(), client_fd);
-            triggerLastWill(clientId);
+            Logger::log(LEVEL::WARNING, "Ungraceful disconnect detected for %s (fd %d)", clientId.c_str(), client_fd);
+            triggerLastWill(clientId); 
         }
         else
         {
             Logger::log(LEVEL::INFO, "Graceful disconnect: %s (fd %d)", clientId.c_str(), client_fd);
         }
 
-        // SCRUB SUBSCRIPTIONS: Prevent sending data to a dead socket
+        // --- 4. Scrub Subscriptions & Session State ---
         {
+            // Lock both to ensure total consistency during cleanup
             std::lock_guard<std::mutex> sessLock(sessionMutex);
             std::lock_guard<std::mutex> subLock(subMutex);
 
             auto sessIt = sessions.find(clientId);
             if (sessIt != sessions.end())
             {
-                // Remove this socket from every topic it was subscribed to
+                // Remove this specific socket from all topic subscriber lists
                 for (const std::string &topic : sessIt->second.subscriptions)
                 {
-                    topicSubscribers[topic].erase(client_fd);
+                    if (topicSubscribers.count(topic))
+                    {
+                        topicSubscribers[topic].erase(client_fd);
+                    }
                 }
 
-                // If Clean Session was requested, wipe the whole session now
                 if (sessIt->second.cleanSession)
                 {
+                    // MQTT Spec: Wipe everything for CleanSession=1
                     sessions.erase(sessIt);
-                    Logger::log(LEVEL::DEBUG, "Cleaned up session for %s", clientId.c_str());
+                    Logger::log(LEVEL::DEBUG, "CleanSession: Session data wiped for %s", clientId.c_str());
                 }
                 else
                 {
-                    // For non-clean: Mark socket as disconnected (-1) but keep the data
+                    // MQTT Spec: Keep subscriptions, but mark socket as dead (-1)
                     sessIt->second.socket = -1;
+                    Logger::log(LEVEL::DEBUG, "Persistent Session: State saved for %s", clientId.c_str());
                 }
             }
+            
+            // Remove the FD mapping as the socket is about to be closed
+            clientIdMap.erase(client_fd);
         }
     }
 
-    // 4. Close the physical connection
+    // --- 5. Physical Resource Cleanup ---
     close(client_fd);
-    Logger::log(LEVEL::INFO, "Resources cleared for client_fd %d", client_fd);
+    Logger::log(LEVEL::INFO, "Connection closed and resources cleared for fd %d", client_fd);
 }
 
 bool mqttbroker::processPacket(int client_fd, bool &gracefulDisconnect)
