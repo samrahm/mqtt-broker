@@ -77,10 +77,10 @@ void mqttbroker::handleClient(int client_fd)
 
     Logger::log(LEVEL::INFO, "New TCP connection established: fd %d", client_fd);
 
-    // 1. Run the packet processing loop
+    // 1. run the packet processing loop
     while (processPacket(client_fd, gracefulDisconnect))
     {
-        // If we haven't identified the client yet, try to find them in the map
+        // if we haven't identified the client yet, try to find them in the map
         if (clientId.empty())
         {
             std::lock_guard<std::mutex> lock(sessionMutex);
@@ -101,7 +101,7 @@ void mqttbroker::handleClient(int client_fd)
         }
     }
 
-    // 3. TRIGGER LAST WILL (The Core Fix)
+    // 3. trigger last will (the core fix)
     if (!clientId.empty())
     {
         if (!gracefulDisconnect)
@@ -114,7 +114,7 @@ void mqttbroker::handleClient(int client_fd)
             Logger::log(LEVEL::INFO, "Graceful disconnect: %s (fd %d)", clientId.c_str(), client_fd);
         }
 
-        // 4. Cleanup session and subscriptions
+        // 4. cleanup session and subscriptions
         cleanupSession(clientId, client_fd);
     }
 
@@ -141,13 +141,13 @@ bool mqttbroker::processPacket(int client_fd, bool &gracefulDisconnect)
 
     size_t index = 0;
 
-    // Loop through the buffer to handle multiple packets
+    // loop through the buffer to handle multiple packets
     while (index < buffer.size())
     {
         uint8_t qos = 0;
         bool retain = false;
         bool dup = false;
-        size_t packetStartIndex = index; // Save where this specific packet starts
+        size_t packetStartIndex = index; // save where this specific packet starts
         // classify according to packet type
         uint8_t firstByte = buffer[index++];
         uint8_t type = firstByte >> 4;
@@ -155,7 +155,7 @@ bool mqttbroker::processPacket(int client_fd, bool &gracefulDisconnect)
         // lower 4 bits with the flags
         uint8_t flags = firstByte & 0x0F;
 
-        // flag check (all EXCEPT PUBLISH)
+        // flag check (all except publish)
         if (!isValidFlags(type, flags))
         {
             Logger::log(LEVEL::ERROR, "Protocol Violation: Malformed Packet. Invalid Flags for Type %d", type);
@@ -163,20 +163,20 @@ bool mqttbroker::processPacket(int client_fd, bool &gracefulDisconnect)
             return false;
         }
 
-        // flags check for PUBLISH packet
+        // flags check for publish packet
         if (type == static_cast<uint8_t>(Signal::PUBLISH))
         {
-            // Bit 3: Duplicate Flag
+            // bit 3: duplicate flag
             dup = (flags & 0x08) >> 3;
 
-            // Bits 2-1: QoS Level
-            // Mask with 0110 (which is 0x06) then shift right by 1
+            // bits 2-1: qos level
+            // mask with 0110 (which is 0x06) then shift right by 1
             qos = (flags & 0x06) >> 1;
 
-            // Bit 0: Retain Flag
+            // bit 0: retain flag
             retain = (flags & 0x01);
 
-            // Validation Check: MQTT Spec says QoS 3 (11) is invalid
+            // validation check: mqtt spec says qos 3 (11) is invalid
             if (qos == 3)
             {
                 Logger::log(LEVEL::ERROR, "Protocol Violation: QoS 3 is not allowed");
@@ -195,22 +195,22 @@ bool mqttbroker::processPacket(int client_fd, bool &gracefulDisconnect)
         }
         catch (...)
         {
-            // Malformed length = Protocol Violation
+            // malformed length = protocol violation
             Logger::log(LEVEL::ERROR, "Protocol Violation: Malformed Length.");
             close(client_fd);
             return false;
         }
 
-        // Check if the actual bytes received match what the header claims
+        // check if the actual bytes received match what the header claims
         if (buffer.size() < (index + remainingLength))
         {
             Logger::log(LEVEL::WARNING, "Partial packet received. Waiting for more data...");
 
-            // TODO: In a real broker, you'd save this buffer and wait for more
+            // TODO: in a real broker, you'd save this buffer and wait for more
             break;
         }
 
-        // We save the position where the next packet SHOULD start
+        // we save the position where the next packet should start
         size_t nextPacketIndex = index + remainingLength;
 
         switch (static_cast<Signal>(type))
@@ -261,10 +261,10 @@ bool mqttbroker::processPacket(int client_fd, bool &gracefulDisconnect)
         case Signal::DISCONNECT:
             Logger::log(LEVEL::DEBUG, "DISCONNECT packet received from fd %d", client_fd);
             gracefulDisconnect = true;
-            return false; // Break the while loop in handleClient
+            return false; // break the while loop in handleclient
 
         case Signal::PINGREQ:
-            // Always send PINGRESP immediately
+            // always send pingresp immediately
             sendPingResp(client_fd);
             break;
 
@@ -289,7 +289,7 @@ bool mqttbroker::processPacket(int client_fd, bool &gracefulDisconnect)
 void mqttbroker::handleConnect(int client_fd, const std::vector<uint8_t> &buffer, size_t &index, uint32_t remainingLength)
 {
     // byte 3 to 8 (1 to 6 in the remaining length) for protocol name
-    // We need at least 2 bytes for length + 4 bytes for "MQTT" + 1 byte for level = 7 bytes
+    // we need at least 2 bytes for length + 4 bytes for "mqtt" + 1 byte for level = 7 bytes
     if (remainingLength < 7)
     {
         Logger::log(LEVEL::ERROR, "CONNECT packet too short for protocol headers");
@@ -334,8 +334,8 @@ void mqttbroker::handleConnect(int client_fd, const std::vector<uint8_t> &buffer
     {
         Logger::log(LEVEL::WARNING, "Unsupported Protocol Level: %d. Sending CONNACK 0x01", protocolLevel);
 
-        // Return Code 0x01: Unacceptable protocol version
-        // Packet: [CONNACK Type (0x20), Remaining Len (2), Ack Flags (0), Return Code (1)]
+        // return code 0x01: unacceptable protocol version
+        // packet: [connack type (0x20), remaining len (2), ack flags (0), return code (1)]
         // send connack
         sendConnack(client_fd, 0x00, 0x01);
         close(client_fd);
@@ -344,11 +344,11 @@ void mqttbroker::handleConnect(int client_fd, const std::vector<uint8_t> &buffer
 
 void mqttbroker::proceedToV311Checklist(int client_fd, const std::vector<uint8_t> &buffer, size_t &index)
 {
-    // --- 1. Extract Variable Header ---
+    // --- 1. extract variable header ---
     uint8_t connectFlags = buffer[index++];
 
-    // Bit breakdown of connectFlags:
-    bool reserved = connectFlags & 0x01; // MUST be 0
+    // bit breakdown of connectflags:
+    bool reserved = connectFlags & 0x01; // must be 0
     bool cleanSession = connectFlags & 0x02;
     bool willFlag = connectFlags & 0x04;
     uint8_t willQoS = (connectFlags & 0x18) >> 3;
@@ -358,7 +358,7 @@ void mqttbroker::proceedToV311Checklist(int client_fd, const std::vector<uint8_t
 
     if (reserved)
     {
-        close(client_fd); // Protocol violation
+        close(client_fd); // protocol violation
         return;
     }
 
@@ -367,21 +367,21 @@ void mqttbroker::proceedToV311Checklist(int client_fd, const std::vector<uint8_t
 
     std::string clientId = get_string(buffer, index);
 
-    // ADD THE CHECK HERE:
+    // add the check here:
     if (clientId.empty())
     {
         clientId = "client_" + std::to_string(client_fd);
         Logger::log(LEVEL::INFO, "Empty ClientID provided. Assigned: %s", clientId.c_str());
     }
-    // Optional fields (only read if flags are set)
+    // optional fields (only read if flags are set)
     std::string willTopic = "";
     std::string willPayload = "";
 
     if (willFlag)
     {
-        willTopic = get_string(buffer, index); // Standard UTF-8
+        willTopic = get_string(buffer, index); // standard utf-8
 
-        // The Payload in MQTT 3.1.1 is also prefixed by a 2-byte length
+        // the payload in mqtt 3.1.1 is also prefixed by a 2-byte length
         willPayload = get_string(buffer, index);
 
         Logger::log(LEVEL::DEBUG, "Will configured: Topic=%s, Payload=%s",
@@ -409,22 +409,28 @@ void mqttbroker::handleSessionLifecycle(int client_fd, const std::string &client
                                         std::string willTopic, std::string willPayload,
                                         uint8_t willQoS, bool willRetain, bool willFlag)
 {
-    // 1. We keep the lock for the ENTIRE duration of the setup to prevent crashes
+    // 1. we keep the lock for the entire duration of the setup to prevent crashes
     std::lock_guard<std::mutex> lock(sessionMutex);
 
     bool sessionPresent = false;
     auto it = sessions.find(clientId);
 
-    if (it != sessions.end()) {
-        if (cleanSession) {
+    if (it != sessions.end())
+    {
+        if (cleanSession)
+        {
             sessions.erase(it);
             sessions[clientId] = Session(client_fd, true);
             sessionPresent = false;
-        } else {
+        }
+        else
+        {
             it->second.socket = client_fd;
             sessionPresent = true;
         }
-    } else {
+    }
+    else
+    {
         sessions[clientId] = Session(client_fd, cleanSession);
         sessionPresent = false;
     }
@@ -442,14 +448,14 @@ void mqttbroker::handleSessionLifecycle(int client_fd, const std::string &client
 
     Logger::log(LEVEL::INFO, "Session ready for %s (fd %d)", clientId.c_str(), client_fd);
 
-    // 2. CRITICAL: Only call networking if they DON'T lock sessionMutex again
-    // If your broker hangs here, your sendConnack has a lock inside it!
+    // 2. critical: only call networking if they don't lock sessionmutex again
+    // if your broker hangs here, your sendconnack has a lock inside it!
     sendConnack(client_fd, sessionPresent ? 0x01 : 0x00, 0x00);
 }
 
 void mqttbroker::proceedToV50Checklist(int client_fd, const std::vector<uint8_t> &buffer, size_t &index)
 {
-    // TODO: Implement MQTT 5.0 support
+    // TODO: implement mqtt 5.0 support
     Logger::log(LEVEL::WARNING, "MQTT 5.0 not yet implemented");
 }
 
@@ -472,7 +478,7 @@ void mqttbroker::logPublish(int client_fd, const std::string &topic, const std::
 
 void mqttbroker::forwardToSubscribers(const std::string &topic, const std::string &message, int exclude_fd)
 {
-    // Step 1: Collect subscriber information (needs both locks for consistency)
+    // step 1: collect subscriber information (needs both locks for consistency)
     struct SubscriberInfo
     {
         int socket;
@@ -483,7 +489,7 @@ void mqttbroker::forwardToSubscribers(const std::string &topic, const std::strin
     std::vector<SubscriberInfo> subscribers;
 
     {
-        // Lock order: sessionMutex FIRST, then subMutex (consistent lock ordering to prevent deadlock)
+        // lock order: sessionmutex first, then submutex (consistent lock ordering to prevent deadlock)
         std::lock_guard<std::mutex> sessLock(sessionMutex);
         std::lock_guard<std::mutex> subLock(subMutex);
 
@@ -510,7 +516,7 @@ void mqttbroker::forwardToSubscribers(const std::string &topic, const std::strin
                 }
 
                 uint16_t pid = 0;
-                // Generate packet ID from session
+                // generate packet id from session
                 if (qos > 0 && !clientId.empty())
                 {
                     auto session_it = sessions.find(clientId);
@@ -520,7 +526,7 @@ void mqttbroker::forwardToSubscribers(const std::string &topic, const std::strin
 
                         if (qos == 2)
                         {
-                            // Store for QoS 2 handshake
+                            // store for qos 2 handshake
                             inflightOutgoing[sock][pid] = PendingQoS2{topic, message};
                         }
                     }
@@ -531,7 +537,7 @@ void mqttbroker::forwardToSubscribers(const std::string &topic, const std::strin
         }
     } // Release both locks before sending
 
-    // Step 2: Send messages to each subscriber (outside locks to avoid blocking)
+    // step 2: send messages to each subscriber (outside locks to avoid blocking)
     for (const auto &sub : subscribers)
     {
         std::vector<uint8_t> packet;
@@ -541,23 +547,23 @@ void mqttbroker::forwardToSubscribers(const std::string &topic, const std::strin
 
         std::vector<uint8_t> body;
 
-        // Topic name: [2-byte length][topic data]
+        // topic name: [2-byte length][topic data]
         uint16_t topicLen = topic.size();
         body.push_back((topicLen >> 8) & 0xFF);
         body.push_back(topicLen & 0xFF);
         body.insert(body.end(), topic.begin(), topic.end());
 
-        // Packet ID (only for QoS > 0)
+        // packet id (only for qos > 0)
         if (sub.qos > 0)
         {
             body.push_back((sub.packetId >> 8) & 0xFF);
             body.push_back(sub.packetId & 0xFF);
         }
 
-        // Payload
+        // payload
         body.insert(body.end(), message.begin(), message.end());
 
-        // Remaining length
+        // remaining length
         uint32_t remLen = body.size();
         if (remLen < 128)
         {
@@ -565,7 +571,7 @@ void mqttbroker::forwardToSubscribers(const std::string &topic, const std::strin
         }
         else
         {
-            // Multi-byte remaining length encoding
+            // multi-byte remaining length encoding
             std::vector<uint8_t> lenBytes;
             while (remLen > 0)
             {
@@ -606,18 +612,18 @@ bool mqttbroker::matchTopic(const std::string &subscription, const std::string &
 
         if (!hasSub && !hasTopic)
         {
-            // Reached end of both, full match
+            // reached end of both, full match
             return true;
         }
 
         if (hasSub && subToken == "#")
         {
-            return true; // Match everything after
+            return true; // match everything after
         }
 
         if (!hasSub || !hasTopic)
         {
-            // One stream ended before the other, not a match
+            // one stream ended before the other, not a match
             return false;
         }
 
@@ -631,8 +637,8 @@ bool mqttbroker::matchTopic(const std::string &subscription, const std::string &
 }
 void mqttbroker::handleSubscribe(int client_fd, const std::vector<uint8_t> &buffer, size_t &index, uint32_t remainingLength)
 {
-    // The index is already pointing at the Packet ID because the main loop
-    // skipped the Fixed Header and decoded the Variable Length.
+    // the index is already pointing at the packet id because the main loop
+    // skipped the fixed header and decoded the variable length.
     uint16_t packetId = (buffer[index] << 8) | buffer[index + 1];
     index += 2;
 
@@ -648,7 +654,7 @@ void mqttbroker::handleSubscribe(int client_fd, const std::vector<uint8_t> &buff
             std::lock_guard<std::mutex> lock(subMutex);
             topicSubscribers[topic][client_fd] = qos;
 
-            // Also update the session so we can clean up on disconnect!
+            // also update the session so we can clean up on disconnect!
             std::string cid = clientIdMap[client_fd];
             sessions[cid].subscriptions.insert(topic);
         }
@@ -668,14 +674,12 @@ void mqttbroker::handleSubscribe(int client_fd, const std::vector<uint8_t> &buff
 
 void mqttbroker::handleUnsubscribe(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength)
 {
-    // TODO: Implement unsubscribe handling
+    // TODO: implement unsubscribe handling
     Logger::log(LEVEL::DEBUG, "handleUnsubscribe not yet implemented");
 }
 
-// ============================================================================
-// PACKET ID FACTORY - Helper function to generate unique packet IDs per session
-// NOTE: Caller MUST hold sessionMutex lock to prevent deadlock!
-// ============================================================================
+// packet id factory - helper function to generate unique packet ids per session
+// note: caller must hold sessionmutex lock to prevent deadlock!
 uint16_t mqttbroker::generatePacketId(const std::string &clientId)
 {
     // DO NOT LOCK HERE - sessionMutex must already be held by caller
@@ -691,7 +695,7 @@ uint16_t mqttbroker::generatePacketId(const std::string &clientId)
     // Increment the packet ID
     it->second.nextPacketId++;
 
-    // Wrap around from 65535 to 1 (never use 0)
+    // wrap around from 65535 to 1 (never use 0)
     if (it->second.nextPacketId == 0)
     {
         it->second.nextPacketId = 1;
@@ -701,26 +705,24 @@ uint16_t mqttbroker::generatePacketId(const std::string &clientId)
     return it->second.nextPacketId;
 }
 
-// ============================================================================
-// SEND PUBLISH TO CLIENT - Helper function to consolidate publish sending logic
-// ============================================================================
+// send publish to client - helper function to consolidate publish sending logic
 void mqttbroker::sendPublishToClient(int client_fd, const MQTTMessage &msg, uint16_t packetId, bool dup)
 {
     std::vector<uint8_t> packet;
 
-    // Build Fixed Header
+    // build fixed header
     uint8_t headerByte = 0x30; // PUBLISH control packet type
 
-    // Set DUP flag if retransmitting
+    // set dup flag if retransmitting
     if (dup)
     {
         headerByte |= 0x08;
     }
 
-    // Set QoS bits
+    // set qos bits
     headerByte |= (msg.qos << 1);
 
-    // Set RETAIN flag
+    // set retain flag
     if (msg.retain)
     {
         headerByte |= 0x01;
@@ -728,26 +730,26 @@ void mqttbroker::sendPublishToClient(int client_fd, const MQTTMessage &msg, uint
 
     packet.push_back(headerByte);
 
-    // Build Variable Header + Payload
+    // build variable header + payload
     std::vector<uint8_t> body;
 
-    // Topic name - each string is encoded as [2-byte length][string data]
+    // topic name - each string is encoded as [2-byte length][string data]
     uint16_t topicLen = msg.topic.size();
     body.push_back((topicLen >> 8) & 0xFF);
     body.push_back(topicLen & 0xFF);
     body.insert(body.end(), msg.topic.begin(), msg.topic.end());
 
-    // Packet Identifier (only for QoS > 0)
+    // packet identifier (only for qos > 0)
     if (msg.qos > 0)
     {
         body.push_back((packetId >> 8) & 0xFF);
         body.push_back(packetId & 0xFF);
     }
 
-    // Payload
+    // payload
     body.insert(body.end(), msg.payload.begin(), msg.payload.end());
 
-    // Remaining Length
+    // remaining length
     uint32_t remainingLength = body.size();
     if (remainingLength < 128)
     {
@@ -755,7 +757,7 @@ void mqttbroker::sendPublishToClient(int client_fd, const MQTTMessage &msg, uint
     }
     else
     {
-        // Handle multi-byte remaining length
+        // handle multi-byte remaining length
         std::vector<uint8_t> lenBytes;
         while (remainingLength > 0)
         {
@@ -770,16 +772,16 @@ void mqttbroker::sendPublishToClient(int client_fd, const MQTTMessage &msg, uint
         packet.insert(packet.end(), lenBytes.begin(), lenBytes.end());
     }
 
-    // Append body
+    // append body
     packet.insert(packet.end(), body.begin(), body.end());
 
-    // Send to client
+    // send to client
     send(client_fd, (const char *)packet.data(), packet.size(), 0);
     Logger::log(LEVEL::DEBUG, "Sent PUBLISH to client %d: topic=%s, qos=%u, dup=%d, packetId=%u",
                 client_fd, msg.topic.c_str(), msg.qos, dup, packetId);
 }
 
-// Resume queued messages on reconnect
+// resume queued messages on reconnect
 
 void mqttbroker::resumeDelayedMessages(const std::string &clientId, int client_fd)
 {
@@ -797,7 +799,7 @@ void mqttbroker::resumeDelayedMessages(const std::string &clientId, int client_f
     Logger::log(LEVEL::INFO, "Resuming delayed messages for clientId: %s (offline queue size: %zu, inflight size: %zu)",
                 clientId.c_str(), session.offlineQueue.size(), session.inflight.size());
 
-    // 1. Process offline queue (messages that arrived while disconnected)
+    // 1. process offline queue (messages that arrived while disconnected)
     while (!session.offlineQueue.empty())
     {
         MQTTMessage msg = session.offlineQueue.front();
@@ -805,12 +807,12 @@ void mqttbroker::resumeDelayedMessages(const std::string &clientId, int client_f
 
         if (msg.qos == 0)
         {
-            // QoS 0: Send and forget
+            // qos 0: send and forget
             sendPublishToClient(client_fd, msg, 0, false);
         }
         else
         {
-            // QoS 1/2: Assign PacketId, move to inflight, and set appropriate status
+            // qos 1/2: assign packetid, move to inflight, and set appropriate status
             uint16_t pid = generatePacketId(clientId);
             msg.packetId = pid;
             msg.status = (msg.qos == 1) ? MessageStatus::AWAITING_PUBACK : MessageStatus::AWAITING_PUBREC;
@@ -824,13 +826,13 @@ void mqttbroker::resumeDelayedMessages(const std::string &clientId, int client_f
         }
     }
 
-    // 2. Retry inflight messages (messages sent before disconnect that never got ACK)
+    // 2. retry inflight messages (messages sent before disconnect that never got ack)
     for (auto &[pid, msg] : session.inflight)
     {
         // Update timestamp to current time for retry tracking
         msg.timestamp = std::time(nullptr);
 
-        // Resend with DUP flag set to 1 (indicates this is a retransmission)
+        // resend with dup flag set to 1 (indicates this is a retransmission)
         sendPublishToClient(client_fd, msg, pid, true);
 
         Logger::log(LEVEL::DEBUG, "Resending inflight message: packetId=%u, qos=%u, dup=true", pid, msg.qos);
@@ -839,10 +841,10 @@ void mqttbroker::resumeDelayedMessages(const std::string &clientId, int client_f
 
 void mqttbroker::handlePublish(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength, uint8_t qos, bool retain, bool dup)
 {
-    // Parse variable header and payload
+    // parse variable header and payload
     size_t startIndex = index;
 
-    // Topic name
+    // topic name
     std::string topic = get_string(buffer, index);
 
     uint16_t packetId = 0;
@@ -852,7 +854,7 @@ void mqttbroker::handlePublish(int client_fd, const std::vector<uint8_t> &buffer
         index += 2;
     }
 
-    // Payload is everything remaining
+    // payload is everything remaining
     size_t payloadSize = (startIndex + remainingLength) - index;
     std::string payload(buffer.begin() + index, buffer.begin() + index + payloadSize);
 
@@ -861,16 +863,16 @@ void mqttbroker::handlePublish(int client_fd, const std::vector<uint8_t> &buffer
 
     logPublish(client_fd, topic, payload);
 
-    // Handle QoS 2  - Must wait for PUBREL before delivering
+    // handle qos 2  - must wait for pubrel before delivering
     if (qos == 2)
     {
-        // Store message until we receive PUBREL
+        // store message until we receive pubrel
         {
             std::lock_guard<std::mutex> lock(subMutex);
             inflightIncoming[client_fd][packetId] = PendingQoS2{topic, payload};
         }
 
-        // Send PUBREC back to client
+        // send pubrec back to client
         std::vector<uint8_t> pubrec;
         pubrec.push_back(PUBREC_TYPE);
         pubrec.push_back(0x02); // Remaining length
@@ -882,10 +884,10 @@ void mqttbroker::handlePublish(int client_fd, const std::vector<uint8_t> &buffer
         return;
     }
 
-    // For QoS 0 and 1, forward to subscribers immediately
+    // for qos 0 and 1, forward to subscribers immediately
     forwardToSubscribers(topic, payload, client_fd);
 
-    // Send PUBACK for QoS 1
+    // send puback for qos 1
     if (qos == 1)
     {
         std::vector<uint8_t> puback;
@@ -899,9 +901,7 @@ void mqttbroker::handlePublish(int client_fd, const std::vector<uint8_t> &buffer
     }
 }
 
-// ============================================================================
-// HANDLE PUBACK - QoS 1 acknowledgement
-// ============================================================================
+// handle puback - qos 1 acknowledgement
 void mqttbroker::handlePuback(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength)
 {
     if (remainingLength < 2)
@@ -914,7 +914,7 @@ void mqttbroker::handlePuback(int client_fd, const std::vector<uint8_t> &buffer,
 
     Logger::log(LEVEL::DEBUG, "Received PUBACK from client %d for packetId %u", client_fd, packetId);
 
-    // Find which client ID this socket belongs to
+    // find which client id this socket belongs to
     std::string clientId;
     {
         std::lock_guard<std::mutex> lock(sessionMutex);
@@ -927,7 +927,7 @@ void mqttbroker::handlePuback(int client_fd, const std::vector<uint8_t> &buffer,
         clientId = it->second;
     }
 
-    // Find and remove the message from inflight map
+    // find and remove the message from inflight map
     {
         std::lock_guard<std::mutex> lock(sessionMutex);
         auto session_it = sessions.find(clientId);
@@ -947,9 +947,7 @@ void mqttbroker::handlePuback(int client_fd, const std::vector<uint8_t> &buffer,
     }
 }
 
-// ============================================================================
-// HANDLE PUBREC - QoS 2 first step (broker receives from client)
-// ============================================================================
+// handle pubrec - qos 2 first step (broker receives from client)
 void mqttbroker::handlePubrec(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength)
 {
     if (remainingLength < 2)
@@ -974,7 +972,7 @@ void mqttbroker::handlePubrec(int client_fd, const std::vector<uint8_t> &buffer,
         clientId = it->second;
     }
 
-    // Update message status from AWAITING_PUBREC to AWAITING_PUBCOMP
+    // update message status from awaiting_pubrec to awaiting_pubcomp
     {
         std::lock_guard<std::mutex> lock(sessionMutex);
         auto session_it = sessions.find(clientId);
@@ -989,7 +987,7 @@ void mqttbroker::handlePubrec(int client_fd, const std::vector<uint8_t> &buffer,
         }
     }
 
-    // Send PUBREL back to client
+    // send pubrel back to client
     std::vector<uint8_t> pubrel;
     pubrel.push_back(PUBREL_TYPE); // 0x62 = PUBREL with flags 0b0010
     pubrel.push_back(0x02);        // Remaining length
@@ -1000,9 +998,7 @@ void mqttbroker::handlePubrec(int client_fd, const std::vector<uint8_t> &buffer,
     Logger::log(LEVEL::DEBUG, "Sent PUBREL to client %d for packetId %u", client_fd, packetId);
 }
 
-// ============================================================================
-// HANDLE PUBREL - QoS 2 second step (broker sends to client)
-// ============================================================================
+// handle pubrel - qos 2 second step (broker sends to client)
 void mqttbroker::handlePubrel(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength)
 {
     if (remainingLength < 2)
@@ -1014,7 +1010,7 @@ void mqttbroker::handlePubrel(int client_fd, const std::vector<uint8_t> &buffer,
     uint16_t packetId = get_uint16(buffer, index);
     Logger::log(LEVEL::DEBUG, "Received PUBREL from client %d for packetId %u", client_fd, packetId);
 
-    // Extract the pending message and deliver it
+    // extract the pending message and deliver it
     PendingQoS2 pending;
     {
         std::lock_guard<std::mutex> lock(subMutex);
@@ -1031,13 +1027,13 @@ void mqttbroker::handlePubrel(int client_fd, const std::vector<uint8_t> &buffer,
         }
     }
 
-    // Forward to subscribers
+    // forward to subscribers
     if (!pending.topic.empty())
     {
         forwardToSubscribers(pending.topic, pending.payload, client_fd);
     }
 
-    // Send PUBCOMP back to client
+    // send pubcomp back to client
     std::vector<uint8_t> pubcomp;
     pubcomp.push_back(PUBCOMP_TYPE); // 0x70 = PUBCOMP
     pubcomp.push_back(0x02);         // Remaining length
@@ -1048,9 +1044,7 @@ void mqttbroker::handlePubrel(int client_fd, const std::vector<uint8_t> &buffer,
     Logger::log(LEVEL::DEBUG, "Sent PUBCOMP to client %d for packetId %u", client_fd, packetId);
 }
 
-// ============================================================================
-// HANDLE PUBCOMP - QoS 2 completion (client confirms receipt of PUBREL)
-// ============================================================================
+// handle pubcomp - qos 2 completion (client confirms receipt of pubrel)
 void mqttbroker::handlePubcomp(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength)
 {
     if (remainingLength < 2)
@@ -1075,7 +1069,7 @@ void mqttbroker::handlePubcomp(int client_fd, const std::vector<uint8_t> &buffer
         clientId = it->second;
     }
 
-    // Remove message from inflight map - QoS 2 handshake is complete
+    // remove message from inflight map - qos 2 handshake is complete
     {
         std::lock_guard<std::mutex> lock(sessionMutex);
         auto session_it = sessions.find(clientId);
@@ -1091,9 +1085,7 @@ void mqttbroker::handlePubcomp(int client_fd, const std::vector<uint8_t> &buffer
     }
 }
 
-// ============================================================================
-// SEND PING RESPONSE
-// ============================================================================
+// send ping response
 void mqttbroker::sendPingResp(int client_fd)
 {
     std::vector<uint8_t> pingresp;
@@ -1103,9 +1095,7 @@ void mqttbroker::sendPingResp(int client_fd)
     Logger::log(LEVEL::DEBUG, "Sent PINGRESP to client %d", client_fd);
 }
 
-// ============================================================================
-// INTERNAL PUBLISH - For publishing will messages and system messages
-// ============================================================================
+// internal publish - for publishing will messages and system messages
 void mqttbroker::internalPublish(const std::string &topic, const std::string &payload, uint8_t qos, bool retain)
 {
     Logger::log(LEVEL::INFO, "Internal publish to topic '%s': %s (QoS=%u)", topic.c_str(), payload.c_str(), qos);
@@ -1114,10 +1104,9 @@ void mqttbroker::internalPublish(const std::string &topic, const std::string &pa
     forwardToSubscribers(topic, payload, -1); // -1 means don't exclude any client
 }
 
-// ============================================================================
-// TRIGGER LAST WILL - Called on ungraceful client disconnect
-// ============================================================================
-void mqttbroker::triggerLastWill(const std::string &clientId) {
+// trigger last will - called on ungraceful client disconnect
+void mqttbroker::triggerLastWill(const std::string &clientId)
+{
     std::string topic;
     std::string payload;
     uint8_t qos;
@@ -1127,25 +1116,25 @@ void mqttbroker::triggerLastWill(const std::string &clientId) {
     {
         std::lock_guard<std::mutex> lock(sessionMutex);
         auto it = sessions.find(clientId);
-        if (it != sessions.end() && it->second.willFlag) {
+        if (it != sessions.end() && it->second.willFlag)
+        {
             topic = it->second.willTopic;
             payload = it->second.willPayload;
             qos = it->second.willQoS;
             retain = it->second.willRetain;
             shouldPublish = true;
-            it->second.willFlag = false; // Clear it so it only fires once
+            it->second.willFlag = false; // clear it so it only fires once
         }
-    } // <--- sessionMutex is RELEASED here
+    } // <--- sessionmutex is released here
 
-    if (shouldPublish && !topic.empty()) {
+    if (shouldPublish && !topic.empty())
+    {
         Logger::log(LEVEL::INFO, "Publishing Last Will for %s", clientId.c_str());
-        internalPublish(topic, payload, qos, retain); // Now this can safely lock!
+        internalPublish(topic, payload, qos, retain); // now this can safely lock!
     }
 }
 
-// ============================================================================
-// RETRY INFLIGHT MESSAGES - Background thread to retry unacknowledged messages
-// ============================================================================
+// retry inflight messages - background thread to retry unacknowledged messages
 void mqttbroker::retryInflightMessages()
 {
     const int RETRY_TIMEOUT_SECONDS = 20; // Retry messages older than 20 seconds
@@ -1162,10 +1151,10 @@ void mqttbroker::retryInflightMessages()
         {
             if (session.socket < 0)
             {
-                continue; // Skip disconnected sessions
+                continue; // skip disconnected sessions
             }
 
-            // Check inflight messages for timeout
+            // check inflight messages for timeout
             for (auto &[packetId, msg] : session.inflight)
             {
                 if (now - msg.timestamp >= RETRY_TIMEOUT_SECONDS)
@@ -1173,10 +1162,10 @@ void mqttbroker::retryInflightMessages()
                     Logger::log(LEVEL::INFO, "Retrying message packetId %u for client %s (timeout: %ld seconds)",
                                 packetId, clientId.c_str(), now - msg.timestamp);
 
-                    // Resend with DUP flag
+                    // resend with dup flag
                     sendPublishToClient(session.socket, msg, packetId, true);
 
-                    // Update timestamp for next retry
+                    // update timestamp for next retry
                     msg.timestamp = now;
                 }
             }
@@ -1186,14 +1175,14 @@ void mqttbroker::retryInflightMessages()
 
 void mqttbroker::cleanupSession(const std::string &clientId, int client_fd)
 {
-    // Lock both to ensure total consistency during cleanup
+    // lock both to ensure total consistency during cleanup
     std::lock_guard<std::mutex> sessLock(sessionMutex);
     std::lock_guard<std::mutex> subLock(subMutex);
 
     auto sessIt = sessions.find(clientId);
     if (sessIt != sessions.end())
     {
-        // 1. Remove this specific socket from all topic subscriber lists
+        // 1. remove this specific socket from all topic subscriber lists
         for (const std::string &topic : sessIt->second.subscriptions)
         {
             if (topicSubscribers.count(topic))
@@ -1202,21 +1191,21 @@ void mqttbroker::cleanupSession(const std::string &clientId, int client_fd)
             }
         }
 
-        // 2. Handle CleanSession logic
+        // 2. handle cleansession logic
         if (sessIt->second.cleanSession)
         {
-            // MQTT Spec: Wipe everything for CleanSession=true
+            // mqtt spec: wipe everything for cleansession=true
             sessions.erase(sessIt);
             Logger::log(LEVEL::DEBUG, "CleanSession: Session data wiped for %s", clientId.c_str());
         }
         else
         {
-            // MQTT Spec: Keep subscriptions, but mark socket as dead (-1)
+            // mqtt spec: keep subscriptions, but mark socket as dead (-1)
             sessIt->second.socket = -1;
             Logger::log(LEVEL::DEBUG, "Persistent Session: State saved for %s", clientId.c_str());
         }
     }
 
-    // 3. Remove the FD mapping as the socket is about to be closed
+    // 3. remove the fd mapping as the socket is about to be closed
     clientIdMap.erase(client_fd);
 }
