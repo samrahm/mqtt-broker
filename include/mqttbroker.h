@@ -127,6 +127,7 @@ private:
     void handleUnsubscribe(int client_fd, const std::vector<uint8_t> &buffer, size_t index, uint32_t remainingLength);
     void triggerLastWill(const std::string &clientId);
     void retryInflightMessages();
+    void cleanupSession(const std::string &clientId, int client_fd);
 
     int server_fd;
     int port;

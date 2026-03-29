@@ -77,12 +77,10 @@ void mqttbroker::handleClient(int client_fd)
 
     Logger::log(LEVEL::INFO, "New TCP connection established: fd %d", client_fd);
 
-    // --- 1. Main Listening Loop ---
-    // We loop as long as processPacket returns true (successful packet handling)
+    // 1. Run the packet processing loop
     while (processPacket(client_fd, gracefulDisconnect))
     {
-        // Optimization: Once the CONNECT packet is processed, 
-        // the clientIdMap will have the ID. We grab it once so we have it if the loop breaks.
+        // If we haven't identified the client yet, try to find them in the map
         if (clientId.empty())
         {
             std::lock_guard<std::mutex> lock(sessionMutex);
@@ -93,73 +91,34 @@ void mqttbroker::handleClient(int client_fd)
         }
     }
 
-    // --- 2. Post-Loop Identification ---
-    // If the loop broke immediately (client never sent CONNECT), clientId might still be empty.
-    // We check the map one last time just in case.
+    // 2. Identify the client one last time if they disconnected immediately
     if (clientId.empty())
     {
         std::lock_guard<std::mutex> lock(sessionMutex);
-        auto it = clientIdMap.find(client_fd);
-        if (it != clientIdMap.end())
+        if (clientIdMap.count(client_fd))
         {
-            clientId = it->second;
+            clientId = clientIdMap[client_fd];
         }
     }
 
-    // --- 3. Handle Last Will & Global Cleanup ---
+    // 3. TRIGGER LAST WILL (The Core Fix)
     if (!clientId.empty())
     {
-        // TRIGGER LAST WILL: Only if they didn't send a DISCONNECT packet
         if (!gracefulDisconnect)
         {
-            Logger::log(LEVEL::WARNING, "Ungraceful disconnect detected for %s (fd %d)", clientId.c_str(), client_fd);
-            triggerLastWill(clientId); 
+            Logger::log(LEVEL::WARNING, "Ungraceful disconnect: %s (fd %d)", clientId.c_str(), client_fd);
+            triggerLastWill(clientId);
         }
         else
         {
             Logger::log(LEVEL::INFO, "Graceful disconnect: %s (fd %d)", clientId.c_str(), client_fd);
         }
 
-        // --- 4. Scrub Subscriptions & Session State ---
-        {
-            // Lock both to ensure total consistency during cleanup
-            std::lock_guard<std::mutex> sessLock(sessionMutex);
-            std::lock_guard<std::mutex> subLock(subMutex);
-
-            auto sessIt = sessions.find(clientId);
-            if (sessIt != sessions.end())
-            {
-                // Remove this specific socket from all topic subscriber lists
-                for (const std::string &topic : sessIt->second.subscriptions)
-                {
-                    if (topicSubscribers.count(topic))
-                    {
-                        topicSubscribers[topic].erase(client_fd);
-                    }
-                }
-
-                if (sessIt->second.cleanSession)
-                {
-                    // MQTT Spec: Wipe everything for CleanSession=1
-                    sessions.erase(sessIt);
-                    Logger::log(LEVEL::DEBUG, "CleanSession: Session data wiped for %s", clientId.c_str());
-                }
-                else
-                {
-                    // MQTT Spec: Keep subscriptions, but mark socket as dead (-1)
-                    sessIt->second.socket = -1;
-                    Logger::log(LEVEL::DEBUG, "Persistent Session: State saved for %s", clientId.c_str());
-                }
-            }
-            
-            // Remove the FD mapping as the socket is about to be closed
-            clientIdMap.erase(client_fd);
-        }
+        // 4. Cleanup session and subscriptions
+        cleanupSession(clientId, client_fd);
     }
 
-    // --- 5. Physical Resource Cleanup ---
     close(client_fd);
-    Logger::log(LEVEL::INFO, "Connection closed and resources cleared for fd %d", client_fd);
 }
 
 bool mqttbroker::processPacket(int client_fd, bool &gracefulDisconnect)
@@ -417,12 +376,16 @@ void mqttbroker::proceedToV311Checklist(int client_fd, const std::vector<uint8_t
     // Optional fields (only read if flags are set)
     std::string willTopic = "";
     std::string willPayload = "";
+
     if (willFlag)
     {
-        willTopic = get_string(buffer, index);
+        willTopic = get_string(buffer, index); // Standard UTF-8
+
+        // The Payload in MQTT 3.1.1 is also prefixed by a 2-byte length
         willPayload = get_string(buffer, index);
-        Logger::log(LEVEL::DEBUG, "Will message configured: topic=%s, qos=%u, retain=%d",
-                    willTopic.c_str(), willQoS, willRetain);
+
+        Logger::log(LEVEL::DEBUG, "Will configured: Topic=%s, Payload=%s",
+                    willTopic.c_str(), willPayload.c_str());
     }
 
     std::string username = "";
@@ -442,46 +405,31 @@ void mqttbroker::proceedToV311Checklist(int client_fd, const std::vector<uint8_t
     // --- 3. Handle Session Logic (The QoS/Persistence part) ---
     handleSessionLifecycle(client_fd, clientId, cleanSession, willTopic, willPayload, willQoS, willRetain, willFlag);
 }
-
 void mqttbroker::handleSessionLifecycle(int client_fd, const std::string &clientId, bool cleanSession,
                                         std::string willTopic, std::string willPayload,
                                         uint8_t willQoS, bool willRetain, bool willFlag)
 {
+    // 1. We keep the lock for the ENTIRE duration of the setup to prevent crashes
     std::lock_guard<std::mutex> lock(sessionMutex);
 
     bool sessionPresent = false;
     auto it = sessions.find(clientId);
 
-    if (it != sessions.end())
-    {
-        // EXISTING SESSION FOUND
-        if (cleanSession)
-        {
-            // Client wants a fresh start: Wipe old data
+    if (it != sessions.end()) {
+        if (cleanSession) {
             sessions.erase(it);
             sessions[clientId] = Session(client_fd, true);
             sessionPresent = false;
-            Logger::log(LEVEL::INFO, "Created new clean session for client %s", clientId.c_str());
-        }
-        else
-        {
-            // RESUME SESSION: Update socket and prepare to send stored QoS messages
+        } else {
             it->second.socket = client_fd;
             sessionPresent = true;
-            Logger::log(LEVEL::INFO, "Resumed existing session for client %s", clientId.c_str());
-
-            // Will be called after CONNACK
         }
-    }
-    else
-    {
-        // NEW SESSION
+    } else {
         sessions[clientId] = Session(client_fd, cleanSession);
         sessionPresent = false;
-        Logger::log(LEVEL::INFO, "Created new session for client %s (cleanSession=%d)", clientId.c_str(), cleanSession);
     }
 
-    // Store will message details in session
+    // Update session data
     Session &session = sessions[clientId];
     session.willTopic = willTopic;
     session.willPayload = willPayload;
@@ -490,17 +438,13 @@ void mqttbroker::handleSessionLifecycle(int client_fd, const std::string &client
     session.willFlag = willFlag;
     session.socket = client_fd;
 
-    // Map the socket fd to clientId for later disconnect handling
     clientIdMap[client_fd] = clientId;
 
-    // --- 4. Send CONNACK ---
-    sendConnack(client_fd, sessionPresent ? 0x01 : 0x00, 0x00);
+    Logger::log(LEVEL::INFO, "Session ready for %s (fd %d)", clientId.c_str(), client_fd);
 
-    // --- 5. If resuming non-clean session, send stored messages ---
-    if (sessionPresent && !cleanSession)
-    {
-        resumeDelayedMessages(clientId, client_fd);
-    }
+    // 2. CRITICAL: Only call networking if they DON'T lock sessionMutex again
+    // If your broker hangs here, your sendConnack has a lock inside it!
+    sendConnack(client_fd, sessionPresent ? 0x01 : 0x00, 0x00);
 }
 
 void mqttbroker::proceedToV50Checklist(int client_fd, const std::vector<uint8_t> &buffer, size_t &index)
@@ -1173,24 +1117,29 @@ void mqttbroker::internalPublish(const std::string &topic, const std::string &pa
 // ============================================================================
 // TRIGGER LAST WILL - Called on ungraceful client disconnect
 // ============================================================================
-void mqttbroker::triggerLastWill(const std::string &clientId)
-{
-    std::lock_guard<std::mutex> lock(sessionMutex);
+void mqttbroker::triggerLastWill(const std::string &clientId) {
+    std::string topic;
+    std::string payload;
+    uint8_t qos;
+    bool retain;
+    bool shouldPublish = false;
 
-    auto it = sessions.find(clientId);
-    if (it == sessions.end())
     {
-        Logger::log(LEVEL::WARNING, "triggerLastWill: Session not found for clientId: %s", clientId.c_str());
-        return;
-    }
+        std::lock_guard<std::mutex> lock(sessionMutex);
+        auto it = sessions.find(clientId);
+        if (it != sessions.end() && it->second.willFlag) {
+            topic = it->second.willTopic;
+            payload = it->second.willPayload;
+            qos = it->second.willQoS;
+            retain = it->second.willRetain;
+            shouldPublish = true;
+            it->second.willFlag = false; // Clear it so it only fires once
+        }
+    } // <--- sessionMutex is RELEASED here
 
-    const Session &session = it->second;
-
-    if (session.willFlag && !session.willTopic.empty())
-    {
-        Logger::log(LEVEL::INFO, "Publishing WILL message for client %s to topic '%s'",
-                    clientId.c_str(), session.willTopic.c_str());
-        internalPublish(session.willTopic, session.willPayload, session.willQoS, session.willRetain);
+    if (shouldPublish && !topic.empty()) {
+        Logger::log(LEVEL::INFO, "Publishing Last Will for %s", clientId.c_str());
+        internalPublish(topic, payload, qos, retain); // Now this can safely lock!
     }
 }
 
@@ -1233,4 +1182,41 @@ void mqttbroker::retryInflightMessages()
             }
         }
     }
+}
+
+void mqttbroker::cleanupSession(const std::string &clientId, int client_fd)
+{
+    // Lock both to ensure total consistency during cleanup
+    std::lock_guard<std::mutex> sessLock(sessionMutex);
+    std::lock_guard<std::mutex> subLock(subMutex);
+
+    auto sessIt = sessions.find(clientId);
+    if (sessIt != sessions.end())
+    {
+        // 1. Remove this specific socket from all topic subscriber lists
+        for (const std::string &topic : sessIt->second.subscriptions)
+        {
+            if (topicSubscribers.count(topic))
+            {
+                topicSubscribers[topic].erase(client_fd);
+            }
+        }
+
+        // 2. Handle CleanSession logic
+        if (sessIt->second.cleanSession)
+        {
+            // MQTT Spec: Wipe everything for CleanSession=true
+            sessions.erase(sessIt);
+            Logger::log(LEVEL::DEBUG, "CleanSession: Session data wiped for %s", clientId.c_str());
+        }
+        else
+        {
+            // MQTT Spec: Keep subscriptions, but mark socket as dead (-1)
+            sessIt->second.socket = -1;
+            Logger::log(LEVEL::DEBUG, "Persistent Session: State saved for %s", clientId.c_str());
+        }
+    }
+
+    // 3. Remove the FD mapping as the socket is about to be closed
+    clientIdMap.erase(client_fd);
 }

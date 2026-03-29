@@ -285,3 +285,973 @@
 [WARNING]  Thu Mar 19 13:55:00 2026  Ungraceful disconnect detected for client_5 (fd 5)
 [INFO]  Thu Mar 19 13:55:00 2026  Publishing WILL message for client client_5 to topic 'status/device1'
 [INFO]  Thu Mar 19 13:55:00 2026  Internal publish to topic 'status/device1': DEVICE_CRASHED (QoS=0)
+[INFO]  Thu Mar 19 13:55:00 2026  MQTT Broker started on port 1884
+[INFO]  Thu Mar 19 13:55:00 2026  MQTT Broker started on port 1884
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  client 4 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will message configured: topic=status/esp8266, qos=0, retain=0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client ESP8266_Device (cleanSession=1)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 4 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  client 5 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 5
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will message configured: topic=status/esp8266, qos=0, retain=0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client ESP8266_Device
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 5 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 5: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 5: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 6
+[INFO]  Thu Mar 19 13:55:00 2026  client 6 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will message configured: topic=status/esp8266, qos=0, retain=0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client ESP8266_Device
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 6 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 7
+[INFO]  Thu Mar 19 13:55:00 2026  client 7 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 7
+[INFO]  Thu Mar 19 13:55:00 2026  Empty ClientID provided. Assigned: client_7
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_7 (cleanSession=1)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 7 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 7 subscribed to 'status/esp8266' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 6: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 7
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 8
+[INFO]  Thu Mar 19 13:55:00 2026  client 8 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will message configured: topic=status/esp8266, qos=0, retain=0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client ESP8266_Device
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 8 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 7
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 7
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 9
+[INFO]  Thu Mar 19 13:55:00 2026  client 9 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 9
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will message configured: topic=status/esp8266, qos=0, retain=0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client ESP8266_Device
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 9 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 9: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 9: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 7
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 9: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 9
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 7
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 10
+[INFO]  Thu Mar 19 13:55:00 2026  client 10 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will message configured: topic=status/esp8266, qos=0, retain=0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client ESP8266_Device
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 10 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 7
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 7
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 7
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 7
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 7
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 10: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  MQTT Broker started on port 1884
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  client 4 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 4
+[INFO]  Thu Mar 19 13:55:00 2026  Empty ClientID provided. Assigned: client_4
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_4 (cleanSession=1)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 4 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 4 subscribed to 'status/esp8266' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  client 5 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 5
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client ESP8266_Device (cleanSession=1)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 5 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 5: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 5: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  Graceful disconnect: client_4 (fd 4)
+[DEBUG]  Thu Mar 19 13:55:00 2026  CleanSession: Session data wiped for client_4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 5: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 6
+[INFO]  Thu Mar 19 13:55:00 2026  client 6 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 6
+[INFO]  Thu Mar 19 13:55:00 2026  Empty ClientID provided. Assigned: client_6
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_6 (cleanSession=1)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 6 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 6 subscribed to 'status/esp8266' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 5
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  client 4 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client ESP8266_Device
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 4 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 7
+[INFO]  Thu Mar 19 13:55:00 2026  client 7 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 7
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client ESP8266_Device
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 7 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 7: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 8
+[INFO]  Thu Mar 19 13:55:00 2026  client 8 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client ESP8266_Device
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 8 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 8: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  MQTT Broker started on port 1884
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  client 4 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client ESP8266_Device (cleanSession=1)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 4 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  client 5 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 5
+[INFO]  Thu Mar 19 13:55:00 2026  Empty ClientID provided. Assigned: client_5
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_5 (cleanSession=1)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 5 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 5 subscribed to 'status/esp8266' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 6
+[INFO]  Thu Mar 19 13:55:00 2026  client 6 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client ESP8266_Device
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 6 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[WARNING]  Thu Mar 19 13:55:00 2026  Ungraceful disconnect: ESP8266_Device (fd 6)
+[INFO]  Thu Mar 19 13:55:00 2026  Publishing Last Will for ESP8266_Device to topic 'status/esp8266'
+[INFO]  Thu Mar 19 13:55:00 2026  Internal publish to topic 'status/esp8266': OFFLINE_CRASHED (QoS=0)
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 7
+[INFO]  Thu Mar 19 13:55:00 2026  client 7 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 7
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 5
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 8
+[INFO]  Thu Mar 19 13:55:00 2026  client 8 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 8
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 9
+[INFO]  Thu Mar 19 13:55:00 2026  client 9 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 9
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 10
+[INFO]  Thu Mar 19 13:55:00 2026  client 10 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 10
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 5
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 11
+[INFO]  Thu Mar 19 13:55:00 2026  client 11 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 11
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 12
+[INFO]  Thu Mar 19 13:55:00 2026  client 12 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 12
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 13
+[INFO]  Thu Mar 19 13:55:00 2026  client 13 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 13
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 5
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 14
+[INFO]  Thu Mar 19 13:55:00 2026  client 14 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 14
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 15
+[INFO]  Thu Mar 19 13:55:00 2026  client 15 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 15
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 16
+[INFO]  Thu Mar 19 13:55:00 2026  client 16 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 16
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 5
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 17
+[INFO]  Thu Mar 19 13:55:00 2026  client 17 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 17
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 18
+[INFO]  Thu Mar 19 13:55:00 2026  client 18 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 18
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[WARNING]  Thu Mar 19 13:55:00 2026  bind failed on port 1884
+[INFO]  Thu Mar 19 13:55:00 2026  MQTT Broker stopped
+[WARNING]  Thu Mar 19 13:55:00 2026  bind failed on port 1884
+[INFO]  Thu Mar 19 13:55:00 2026  MQTT Broker stopped
+[INFO]  Thu Mar 19 13:55:00 2026  MQTT Broker started on port 1884
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  client 4 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 4
+[INFO]  Thu Mar 19 13:55:00 2026  Empty ClientID provided. Assigned: client_4
+[INFO]  Thu Mar 19 13:55:00 2026  Session ready for client_4 (fd 4)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 4 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 4 subscribed to 'status/esp8266' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  client 5 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 5
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  Session ready for ESP8266_Device (fd 5)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 5 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 5: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 5: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  Graceful disconnect: client_4 (fd 4)
+[DEBUG]  Thu Mar 19 13:55:00 2026  CleanSession: Session data wiped for client_4
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 6
+[INFO]  Thu Mar 19 13:55:00 2026  client 6 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 6
+[INFO]  Thu Mar 19 13:55:00 2026  Empty ClientID provided. Assigned: client_6
+[INFO]  Thu Mar 19 13:55:00 2026  Session ready for client_6 (fd 6)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 6 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 6 subscribed to 'status/esp8266' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  client 4 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  Session ready for ESP8266_Device (fd 4)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 4 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 7
+[INFO]  Thu Mar 19 13:55:00 2026  client 7 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 7
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will configured: Topic=status/esp8266, Payload=OFFLINE_CRASHED
+[INFO]  Thu Mar 19 13:55:00 2026  Session ready for ESP8266_Device (fd 7)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 7 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 7: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Hello from the ESP8266 hardware!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 7: topic=nust/esp8266, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/esp8266': Heartbeat from Hardware
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'status/esp8266' with topic 'nust/esp8266'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
