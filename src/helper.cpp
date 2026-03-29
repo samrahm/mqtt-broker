@@ -46,8 +46,13 @@ bool isValidFlags(uint8_t type, uint8_t flags) {
 }
 
 std::string get_string(const std::vector<uint8_t>& buffer, size_t& offset) {
+    if (offset + 2 > buffer.size()) return ""; // Safety check
+    
     uint16_t len = (buffer[offset] << 8) | buffer[offset + 1];
+    
+    if (offset + 2 + len > buffer.size()) return ""; // Safety check
+    
     std::string str(buffer.begin() + offset + 2, buffer.begin() + offset + 2 + len);
-    offset += (2 + len); // Crucial: move the cursor forward
+    offset += (2 + len);
     return str;
 }

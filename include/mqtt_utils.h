@@ -29,14 +29,14 @@ inline void put_string(std::vector<uint8_t> &data, const std::string &str)
     data.insert(data.end(), str.begin(), str.end());
 }
 
-inline std::string get_string(const std::vector<uint8_t> &data, size_t &offset)
-{
-    uint16_t length = get_uint16(data, offset);
-    offset += 2;
-    std::string result(data.begin() + offset, data.begin() + offset + length);
-    offset += length;
-    return result;
-}
+// inline std::string get_string(const std::vector<uint8_t> &data, size_t &offset)
+// {
+//     uint16_t length = get_uint16(data, offset);
+//     offset += 2;
+//     std::string result(data.begin() + offset, data.begin() + offset + length);
+//     offset += length;
+//     return result;
+// }
 
 struct RemainingLengthResult
 {

@@ -21,3 +21,204 @@
 [INFO]  Sat Jan 17 18:18:57 2026  client 5 connected
 [INFO]  Sat Jan 17 18:18:57 2026  sent CONNACK to client 5
 [INFO]  Sat Jan 17 18:18:57 2026  Client 5 subscribed to topic 'test/qos0' (QoS 0)
+[INFO]  Thu Mar 19 13:55:00 2026  MQTT Broker started on port 1884
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  client 4 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 4
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client  (cleanSession=1)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 4 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 4 subscribed to 'nust/test' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  client 5 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 5
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client 
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 5 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 5 subscribed to 'nust/test' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  client 4 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 4
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client 
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 4 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 4: topic=nust/test, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/test': Hello NUST!
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'nust/test' with topic 'nust/test'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Forwarded message to socket 5: topic=nust/test, qos=0, packetId=0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 2
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Sent PINGRESP to client 5
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 6
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 12
+[INFO]  Thu Mar 19 13:55:00 2026  client 6 connected
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 9
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 11
+[INFO]  Thu Mar 19 13:55:00 2026  client 4 connected
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 15
+[INFO]  Thu Mar 19 13:55:00 2026  client 9 connected
+[INFO]  Thu Mar 19 13:55:00 2026  client 12 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 4
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 19
+[INFO]  Thu Mar 19 13:55:00 2026  client 11 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 6
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 17
+[INFO]  Thu Mar 19 13:55:00 2026  client 5 connected
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 16
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 12
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 11
+[INFO]  Thu Mar 19 13:55:00 2026  client 16 connected
+[INFO]  Thu Mar 19 13:55:00 2026  client 19 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 5
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 9
+[INFO]  Thu Mar 19 13:55:00 2026  client 17 connected
+[INFO]  Thu Mar 19 13:55:00 2026  client 15 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_6 (cleanSession=1)
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 15
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 6 (flags=0x00, code=0x00)
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 17
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 19
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 16
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_5 (cleanSession=1)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 17 (flags=0x00, code=0x00)
+[INFO]  Thu Mar 19 13:55:00 2026  Client 6 subscribed to 'nust/stress' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_4 (cleanSession=1)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 12 (flags=0x00, code=0x00)
+[INFO]  Thu Mar 19 13:55:00 2026  Client 17 subscribed to 'nust/stress' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_8 (cleanSession=1)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 12 subscribed to 'nust/stress' (QoS 0)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 11 (flags=0x00, code=0x00)
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_1 (cleanSession=1)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 5 (flags=0x00, code=0x00)
+[INFO]  Thu Mar 19 13:55:00 2026  Client 11 subscribed to 'nust/stress' (QoS 0)
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_9 (cleanSession=1)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 5 subscribed to 'nust/stress' (QoS 0)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 9 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_10 (cleanSession=1)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 15 (flags=0x00, code=0x00)
+[INFO]  Thu Mar 19 13:55:00 2026  Client 9 subscribed to 'nust/stress' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_2 (cleanSession=1)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 15 subscribed to 'nust/stress' (QoS 0)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 4 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_3 (cleanSession=1)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 4 subscribed to 'nust/stress' (QoS 0)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 19 (flags=0x00, code=0x00)
+[INFO]  Thu Mar 19 13:55:00 2026  Created new session for client client_7 (cleanSession=1)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 19 subscribed to 'nust/stress' (QoS 0)
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 16 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 16 subscribed to 'nust/stress' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 23
+[INFO]  Thu Mar 19 13:55:00 2026  client 23 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 23
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client 
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 23 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Publish Detected: QoS 0, Retain 0, Dup 0
+[INFO]  Thu Mar 19 13:55:00 2026  Received PUBLISH from client 23: topic=nust/stress, qos=0, retain=0, dup=0, packetId=0
+[INFO]  Thu Mar 19 13:55:00 2026  published message to topic 'nust/stress': Mass broadcast successful
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'nust/stress' with topic 'nust/stress'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Matching subscription 'nust/test' with topic 'nust/stress'
+[DEBUG]  Thu Mar 19 13:55:00 2026  Forwarded message to socket 16: topic=nust/stress, qos=0, packetId=0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Forwarded message to socket 15: topic=nust/stress, qos=0, packetId=0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Forwarded message to socket 9: topic=nust/stress, qos=0, packetId=0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Forwarded message to socket 5: topic=nust/stress, qos=0, packetId=0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Forwarded message to socket 11: topic=nust/stress, qos=0, packetId=0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Forwarded message to socket 12: topic=nust/stress, qos=0, packetId=0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Forwarded message to socket 4: topic=nust/stress, qos=0, packetId=0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Forwarded message to socket 17: topic=nust/stress, qos=0, packetId=0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Forwarded message to socket 19: topic=nust/stress, qos=0, packetId=0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Forwarded message to socket 6: topic=nust/stress, qos=0, packetId=0
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 2
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 23
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 23
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 16
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 19
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 12
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 15
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 5
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 17
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 11
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 9
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 6
+[INFO]  Thu Mar 19 13:55:00 2026  Graceful disconnect: client_6 (fd 6)
+[INFO]  Thu Mar 19 13:55:00 2026  Graceful disconnect: client_2 (fd 4)
+[INFO]  Thu Mar 19 13:55:00 2026  Graceful disconnect: client_5 (fd 17)
+[INFO]  Thu Mar 19 13:55:00 2026  Graceful disconnect: client_4 (fd 12)
+[INFO]  Thu Mar 19 13:55:00 2026  Graceful disconnect: client_10 (fd 15)
+[INFO]  Thu Mar 19 13:55:00 2026  Graceful disconnect: client_7 (fd 16)
+[INFO]  Thu Mar 19 13:55:00 2026  Graceful disconnect: client_8 (fd 11)
+[INFO]  Thu Mar 19 13:55:00 2026  Graceful disconnect: client_3 (fd 19)
+[INFO]  Thu Mar 19 13:55:00 2026  Graceful disconnect: client_9 (fd 9)
+[INFO]  Thu Mar 19 13:55:00 2026  Graceful disconnect: client_1 (fd 5)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Cleaned up session for client_6
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 6
+[DEBUG]  Thu Mar 19 13:55:00 2026  Cleaned up session for client_2
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Cleaned up session for client_5
+[DEBUG]  Thu Mar 19 13:55:00 2026  Cleaned up session for client_7
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 17
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 16
+[DEBUG]  Thu Mar 19 13:55:00 2026  Cleaned up session for client_10
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 15
+[DEBUG]  Thu Mar 19 13:55:00 2026  Cleaned up session for client_4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Cleaned up session for client_3
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 12
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 19
+[DEBUG]  Thu Mar 19 13:55:00 2026  Cleaned up session for client_8
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 11
+[DEBUG]  Thu Mar 19 13:55:00 2026  Cleaned up session for client_9
+[DEBUG]  Thu Mar 19 13:55:00 2026  Cleaned up session for client_1
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 9
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 5
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 7
+[INFO]  Thu Mar 19 13:55:00 2026  client 7 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 7
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client 
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 7 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 7 subscribed to 'status/device1' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  New TCP connection established: fd 4
+[INFO]  Thu Mar 19 13:55:00 2026  client 4 connected
+[INFO]  Thu Mar 19 13:55:00 2026  Version 3.1.1 detected for client 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  Will message configured: topic=status/device1, qos=0, retain=0
+[INFO]  Thu Mar 19 13:55:00 2026  Created new clean session for client 
+[INFO]  Thu Mar 19 13:55:00 2026  sent CONNACK to client 4 (flags=0x00, code=0x00)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Client 4 subscribed to 'data' (QoS 0)
+[DEBUG]  Thu Mar 19 13:55:00 2026  Processed one packet. Remaining buffer bytes: 0
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 4
+[DEBUG]  Thu Mar 19 13:55:00 2026  DISCONNECT packet received from fd 7
+[INFO]  Thu Mar 19 13:55:00 2026  Resources cleared for client_fd 7
